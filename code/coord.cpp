@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "coord.hpp"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -28,3 +29,24 @@ TEST_CASE("Constructeur") {
 
     CHECK_THROWS_AS(Coord(50, 30), invalid_argument);
 }
+
+void Ensemble::affiche(ostream &out) const{
+    out << "{ ";
+    for (int i = 0; i < card; i++) {
+        out << t[i];
+        if (i < card - 1) out << ", ";
+    }
+    out << " }";
+}
+
+Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
+
+bool Ensemble::estVide(){
+    if(card == 0) return true;
+    return false;
+}
+
+int Ensemble::cardinal(){
+    return card;
+}
+
