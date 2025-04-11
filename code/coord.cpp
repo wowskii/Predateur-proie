@@ -1,13 +1,8 @@
-#include "doctest.h"
 #include "coord.hpp"
-#include <iostream>
-#include <vector>
+#include "doctest.h"
 
-using namespace std;
 
 int TAILLEGRILLE = 40;
-
-
 
 Coord::Coord(int coordx, int coordy) : x{coordx}, y{coordy}
 {
@@ -45,6 +40,11 @@ void Ensemble::affiche(ostream &out) const{
     out << " }";
 }
 
+ostream& operator<<(ostream& out, const Ensemble& e) {
+    e.affiche(out);
+    return out;
+}
+
 Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
 
 bool Ensemble::estVide(){
@@ -54,5 +54,13 @@ bool Ensemble::estVide(){
 
 int Ensemble::cardinal(){
     return card;
+}
+
+int Ensemble::ajoute(int a){
+    if(card >= MAXCARD){
+        throw runtime_error("Ajout impossible");
+    }
+    t[card] = a;
+    card++;
 }
 
