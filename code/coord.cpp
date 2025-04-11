@@ -14,11 +14,11 @@ Coord::Coord(int coordx, int coordy) : x{coordx}, y{coordy}
     if (x < 0 or y < 0 or x > 40 or x > 40) throw invalid_argument("Coordonnées invalides");
 }
 
-int Coord::getX(){
+int Coord::getX() const{
     return x;
 }
 
-int Coord::getY(){
+int Coord::getY() const{
     return y;
 }
 
@@ -26,9 +26,15 @@ TEST_CASE("Constructeur") {
     Coord c1{4,5};
     CHECK(c1.getX() == 4);
     CHECK(c1.getY() == 5);
-
     CHECK_THROWS_AS(Coord(50, 30), invalid_argument);
+    cout << c1 << endl;
 }
+
+
+ostream& operator<<(ostream& out, const Coord c) {
+    cout << "(" << c.getX() << "," << c.getY() << ")";
+}
+
 
 void Ensemble::affiche(ostream &out) const{
     out << "{ ";
