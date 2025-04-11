@@ -64,3 +64,14 @@ int Ensemble::ajoute(int a){
     card++;
 }
 
+int Ensemble::tire(){
+    if(estVide()) throw runtime_error("Retrait impossible");
+    int index = rand() % card;
+    int randnum = t[index];
+
+    t[index] = t[card - 1];
+    card--;
+
+    return randnum;
+}
+

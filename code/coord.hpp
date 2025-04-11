@@ -32,6 +32,7 @@ class Ensemble {
         void affiche(ostream &out) const;
         friend ostream& operator<<(ostream& out, const Ensemble& e);
         int ajoute(int a);
+        int tire();
 };
 
 #endif
