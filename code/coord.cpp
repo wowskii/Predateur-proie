@@ -48,20 +48,52 @@ ostream& operator<<(ostream& out, const Ensemble& e) {
 Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
 
 bool Ensemble::estVide(){
-    if(card == 0) return true;
-    return false;
+    return card == 0;
+}
+TEST_CASE("Fonction estVide"){
+    Ensemble c1;
+    CHECK(c1.estVide() == true);
+
+    c1.ajoute(10);
+    CHECK(c1.estVide() == false);
+
+    c1.tire();
+    CHECK(c1.estVide() == true);
 }
 
 int Ensemble::cardinal(){
     return card;
 }
+TEST_CASE("Fonction cardinal"){
+    Ensemble c1;
+    CHECK(c1.cardinal() == 0);
 
-int Ensemble::ajoute(int a){
+    c1.ajoute(10);
+    CHECK(c1.cardinal() == 1);
+
+    c1.tire();
+    CHECK(c1.cardinal() == 0);
+}
+
+void Ensemble::ajoute(int a){
     if(card >= MAXCARD){
         throw runtime_error("Ajout impossible");
     }
     t[card] = a;
     card++;
+}
+TEST_CASE("Fonction ajoute"){
+    Ensemble c2;
+
+    CHECK(c2.estVide() == true);
+    CHECK(c2.cardinal() == 0);
+
+    c2.ajoute(1);
+    CHECK(c2.estVide() == false);
+    CHECK(c2.cardinal() == 1);
+
+    c2.ajoute(2);
+    CHECK(c2.cardinal() == 2);
 }
 
 int Ensemble::tire(){

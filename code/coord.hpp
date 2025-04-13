@@ -31,7 +31,7 @@ class Ensemble {
         int cardinal();
         void affiche(ostream &out) const;
         friend ostream& operator<<(ostream& out, const Ensemble& e);
-        int ajoute(int a);
+        void ajoute(int a);
         int tire();
 };
 
