@@ -9,14 +9,16 @@ using namespace std;
 class Coord
 {
 private:
-    int x = 0;
-    int y = 0;
+    int x;
+    int y;
 
 public:
     Coord(int x, int y);
 
     int getX() const;
     int getY() const;
+    void voisine(Coord e);
+    int toInt() const;
 };
 
 class Ensemble { 

@@ -22,12 +22,16 @@ TEST_CASE("Constructeur") {
     CHECK(c1.getX() == 4);
     CHECK(c1.getY() == 5);
     CHECK_THROWS_AS(Coord(50, 30), invalid_argument);
-    cout << c1 << endl;
 }
 
 
-ostream& operator<<(ostream& out, const Coord c) {
-    cout << "(" << c.getX() << "," << c.getY() << ")";
+ostream& operator<<(ostream& out, const Coord& c) {
+    out << "(" << c.getX() << "," << c.getY() << ")";
+    return out;
+}
+
+int Coord::toInt() const {
+    return x * (TAILLEGRILLE + 1) + y;
 }
 
 
