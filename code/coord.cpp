@@ -4,36 +4,121 @@
 
 int TAILLEGRILLE = 40;
 
-Coord::Coord(int coordx, int coordy) : x{coordx}, y{coordy}
+//Classe Coord
+
+Coord::Coord(int l, int c) : lig{l}, col{c}
 {
-    if (x < 0 or y < 0 or x > 40 or x > 40) throw invalid_argument("Coordonnées invalides");
+    if (l < 0 or c < 0 or l >= TAILLEGRILLE or c >= TAILLEGRILLE) throw invalid_argument("Coordonnées invalides");
 }
 
-int Coord::getX() const{
-    return x;
+Coord::Coord(int n) {
+    if (n<0 or n > TAILLEGRILLE*TAILLEGRILLE - 1) throw invalid_argument("Valeur invalide");
+    int c = n % TAILLEGRILLE;
+    int l = n / TAILLEGRILLE;
+    lig = l;
+    col = c;
 }
 
-int Coord::getY() const{
-    return y;
+int Coord::getLig() const{
+    return lig;
+}
+
+int Coord::getCol() const{
+    return col;
 }
 
 TEST_CASE("Constructeur") {
-    Coord c1{4,5};
-    CHECK(c1.getX() == 4);
-    CHECK(c1.getY() == 5);
-    CHECK_THROWS_AS(Coord(50, 30), invalid_argument);
+    // Cas limite en 0
+    Coord c1{0,0};
+    CHECK(c1.getLig() == 0);
+    CHECK(c1.getCol() == 0);
+
+    // Cas général
+    int rlig = rand()%TAILLEGRILLE;
+    int rcol = rand()%TAILLEGRILLE;
+    Coord c2{rlig,rcol};
+    CHECK(c2.getLig() == rlig);
+    CHECK(c2.getCol() == rcol);
+
+    // Cas limite en TAILLEGRILLE-1
+    Coord c3{TAILLEGRILLE-1,TAILLEGRILLE-1};
+    CHECK(c3.getLig() == TAILLEGRILLE-1);
+    CHECK(c3.getCol() == TAILLEGRILLE-1);
+
+    // Coordonnées invalides
+    CHECK_THROWS_AS(Coord(TAILLEGRILLE + 10, 30), invalid_argument);
+    CHECK_THROWS_AS(Coord(23, -2), invalid_argument);
 }
 
 
 ostream& operator<<(ostream& out, const Coord& c) {
-    out << "(" << c.getX() << "," << c.getY() << ")";
+    out << "(" << c.getLig() << "," << c.getCol() << ")";
     return out;
 }
 
-int Coord::toInt() const {
-    return x * (TAILLEGRILLE + 1) + y;
+TEST_CASE("Affichage de coordonnees") {
+    Coord c1{4,5};
+    ostringstream oss1;
+    oss1 << c1;
+    CHECK(oss1.str() == "(4,5)");
+    Coord c2{TAILLEGRILLE-1, TAILLEGRILLE-1};
+    ostringstream oss2;
+    oss2 << c2;
+    CHECK(oss2.str() == "(" + to_string(TAILLEGRILLE-1) + "," + to_string(TAILLEGRILLE-1) + ")");
 }
 
+bool operator==(const Coord& c1, const Coord& c2) {
+    return (c1.getLig() == c2.getLig() && c1.getCol() == c2.getCol());
+}
+
+bool operator!=(const Coord& c1, const Coord& c2) {
+    return !(c1 == c2);
+}
+
+TEST_CASE("Comparaison de coordonnees") {
+    Coord c1{4,5};
+    Coord c2{4,5};
+    Coord c3{5,6};
+
+    CHECK(c1 == c2);
+    CHECK(c1 != c3);
+    CHECK(c2 != c3);
+}
+
+int Coord::toInt() const {
+    return lig * TAILLEGRILLE + col;
+}
+
+
+TEST_CASE("Encodage en entiers") {
+    // Cas général
+    Coord c1{4,5};
+    CHECK(c1 == Coord{165});
+
+    // Cas limites
+    CHECK(Coord{0} == Coord{0,0});
+    CHECK(Coord{1} == Coord{0,1});
+    CHECK(Coord{TAILLEGRILLE} == Coord{1,0});
+    CHECK(Coord{TAILLEGRILLE*TAILLEGRILLE - 1} == Coord{TAILLEGRILLE-1,TAILLEGRILLE-1});
+
+
+    // Cas: entier invalide
+    CHECK_THROWS_AS(Coord(TAILLEGRILLE*TAILLEGRILLE), invalid_argument);
+    CHECK_THROWS_AS(Coord(-17), invalid_argument);
+}
+
+TEST_CASE("Fonction toInt") {
+    for (int i = 0; i<10; i++) {
+        int rlig = rand() % TAILLEGRILLE;
+        int rcol = rand() % TAILLEGRILLE;
+        
+        Coord crand{rlig,rcol};
+        CHECK(Coord{crand.toInt()} == crand);
+    }
+}
+
+
+//Classe Ensemble
 
 void Ensemble::affiche(ostream &out) const{
     out << "{ ";

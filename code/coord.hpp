@@ -4,20 +4,22 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <sstream>
 
 using namespace std;
 class Coord
 {
 private:
-    int x;
-    int y;
+    int lig;
+    int col;
 
 public:
-    Coord(int x, int y);
+    Coord(int lig, int col);
+    Coord(int n);
 
-    int getX() const;
-    int getY() const;
-    void voisine(Coord e);
+    int getLig() const;
+    int getCol() const;
+    void voisine(Coord e) const;
     int toInt() const;
 };
 
