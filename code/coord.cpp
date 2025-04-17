@@ -132,7 +132,6 @@ void Coord::voisine(Coord e) const{
     }
 }
 
-
 //Classe Ensemble
 
 void Ensemble::affiche(ostream &out) const{
