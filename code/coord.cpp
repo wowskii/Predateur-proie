@@ -135,17 +135,22 @@ void Coord::voisine(Coord e) const{
 //Classe Ensemble
 
 void Ensemble::affiche(ostream &out) const{
-    out << "{ ";
     for (int i = 0; i < card; i++) {
-        out << t[i];
+        out << Coord(t[i]);
         if (i < card - 1) out << ", ";
     }
-    out << " }";
 }
 
 ostream& operator<<(ostream& out, const Ensemble& e) {
     e.affiche(out);
     return out;
+}
+TEST_CASE("Affichage d'ensemle") {
+    Ensemble c1;
+    c1.ajoute(2);
+    ostringstream oss1;
+    oss1 << c1;
+    CHECK(oss1.str() == "(0,2)");
 }
 
 Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
