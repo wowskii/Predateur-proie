@@ -117,6 +117,21 @@ TEST_CASE("Fonction toInt") {
     }
 }
 
+void Coord::voisine(Coord e) const{
+    Ensemble ev;
+    int imin = max(lig - 1, 0);
+    int imax = min(lig + 1, TAILLEGRILLE - 1);
+    int jmin = max(col - 1, 0);
+    int jmax = min(col+1, TAILLEGRILLE - 1);
+    for (int i = imin; i < imax; i++){
+        for(int j = jmin; j < jmax; j++){
+            if((i != lig) || (j != col)){
+                ev.ajoute(Coord{i, j}.toInt());
+            }
+        }
+    }
+}
+
 
 //Classe Ensemble
 
