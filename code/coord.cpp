@@ -135,11 +135,38 @@ Ensemble Coord::voisine() const{
 
 TEST_CASE("voisines") {
     Ensemble ev1;
-    ev1.ajoute(Coord{0,1}.toInt()); ev1.ajoute(Coord{1,0}.toInt()); ev1.ajoute(Coord{1,1}.toInt());
+    ev1 = Coord{0,0}.voisine();
     ostringstream oss1;
     oss1 << ev1;
     CHECK(oss1.str() == "{(0,1), (1,0), (1,1)}");
     cout << ev1;
+
+    //Coins de la grille
+    Coord coin1 = Coord{0,0};
+    Ensemble evcoin1 = coin1.voisine(); 
+    CHECK(evcoin1.cardinal() == 3);
+    Coord coin2 = Coord{TAILLEGRILLE-1,0};
+    Ensemble evcoin2 = coin2.voisine(); 
+    CHECK(evcoin2.cardinal() == 3);
+    Coord coin3 = Coord{0,TAILLEGRILLE-1};
+    Ensemble evcoin3 = coin3.voisine(); 
+    CHECK(evcoin3.cardinal() == 3);
+    Coord coin4 = Coord{TAILLEGRILLE-1,TAILLEGRILLE-1};
+    Ensemble evcoin4 = coin4.voisine(); 
+    CHECK(evcoin4.cardinal() == 3);
+    cout << evcoin1 << evcoin2 << evcoin3 << evcoin4;
+    //Bords de la grille
+    for (int i = 0; i < 10; i++) {
+        int l,c;
+        int quelbord = rand() % 4;
+        switch (quelbord) {
+            case 0: l = 1+rand() % TAILLEGRILLE-1; c = 0;
+            case 1: l = 0; c = 1+rand() % TAILLEGRILLE-1;
+            case 3: l = 1+rand() % TAILLEGRILLE-1; c = TAILLEGRILLE-1;
+            case 4: l = TAILLEGRILLE; c = 1+rand() % TAILLEGRILLE-1;
+        }
+        CHECK(Coord{l,c}.voisine().cardinal() == 5);
+    }
 }
 
 
