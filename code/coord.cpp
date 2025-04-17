@@ -138,17 +138,21 @@ TEST_CASE("voisines") {
     ev1.ajoute(Coord{0,1}.toInt()); ev1.ajoute(Coord{1,0}.toInt()); ev1.ajoute(Coord{1,1}.toInt());
     ostringstream oss1;
     oss1 << ev1;
-    CHECK(oss1.str() == "{(0,0), (1,0), (1,1)}");
+    CHECK(oss1.str() == "{(0,1), (1,0), (1,1)}");
     cout << ev1;
+
+    
 }
 
 //Classe Ensemble
 
 void Ensemble::affiche(ostream &out) const{
+    out << "{";
     for (int i = 0; i < card; i++) {
         out << Coord(t[i]);
         if (i < card - 1) out << ", ";
     }
+    out << "}";
 }
 
 ostream& operator<<(ostream& out, const Ensemble& e) {
@@ -160,7 +164,7 @@ TEST_CASE("Affichage d'ensemle") {
     c1.ajoute(2);
     ostringstream oss1;
     oss1 << c1;
-    CHECK(oss1.str() == "(0,2)");
+    CHECK(oss1.str() == "{(0,2)}");
 }
 
 Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
