@@ -117,7 +117,7 @@ TEST_CASE("Fonction toInt") {
     }
 }
 
-void Coord::voisine(Coord e) const{
+Ensemble Coord::voisine() const{
     Ensemble ev;
     int imin = max(lig - 1, 0);
     int imax = min(lig + 1, TAILLEGRILLE - 1);
@@ -130,6 +130,16 @@ void Coord::voisine(Coord e) const{
             }
         }
     }
+    return ev;
+}
+
+TEST_CASE("voisines") {
+    Ensemble ev1;
+    ev1.ajoute(Coord{0,1}.toInt()); ev1.ajoute(Coord{1,0}.toInt()); ev1.ajoute(Coord{1,1}.toInt());
+    ostringstream oss1;
+    oss1 << ev1;
+    CHECK(oss1.str() == "{(0,0), (1,0), (1,1)}");
+    cout << ev1;
 }
 
 //Classe Ensemble

@@ -7,21 +7,6 @@
 #include <sstream>
 
 using namespace std;
-class Coord
-{
-private:
-    int lig;
-    int col;
-
-public:
-    Coord(int lig, int col);
-    Coord(int n);
-
-    int getLig() const;
-    int getCol() const;
-    void voisine(Coord e) const;
-    int toInt() const;
-};
 
 class Ensemble { 
     private :
@@ -38,5 +23,21 @@ class Ensemble {
         void ajoute(int a);
         int tire();
 };
+class Coord
+{
+private:
+    int lig;
+    int col;
+
+public:
+    Coord(int lig, int col);
+    Coord(int n);
+
+    int getLig() const;
+    int getCol() const;
+    Ensemble voisine() const;
+    int toInt() const;
+};
+
 
 #endif
