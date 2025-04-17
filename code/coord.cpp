@@ -191,6 +191,13 @@ TEST_CASE("Affichage d'ensemle")
     ostringstream oss2;
     oss2 << c1;
     CHECK(oss2.str() == "{}");
+
+    c1.ajoute(4);
+    c1.ajoute(15);
+    c1.ajoute(20);
+    ostringstream oss3;
+    oss3 << c1;
+    CHECK(oss3.str() == "{(0,4), (0,15), (0,20)}");
 }
 
 Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
