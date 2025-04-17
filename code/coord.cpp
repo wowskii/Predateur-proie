@@ -140,8 +140,6 @@ TEST_CASE("voisines") {
     oss1 << ev1;
     CHECK(oss1.str() == "{(0,1), (1,0), (1,1)}");
     cout << ev1;
-
-    
 }
 
 //Classe Ensemble
