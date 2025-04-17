@@ -142,6 +142,8 @@ TEST_CASE("voisines") {
     cout << ev1;
 }
 
+
+
 //Classe Ensemble
 
 void Ensemble::affiche(ostream &out) const{
