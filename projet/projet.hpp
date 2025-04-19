@@ -45,7 +45,8 @@ class Animal{
         int id;
         Coord coord;
     public:
-        int getId();
+        int getId() const;
+        pair<int, int> getCoord() const;
 };
 
 #endif
