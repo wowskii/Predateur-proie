@@ -30,6 +30,7 @@ private:
     int col;
 
 public:
+    Coord();
     Coord(int lig, int col);
     Coord(int n);
 

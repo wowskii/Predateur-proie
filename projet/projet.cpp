@@ -1,6 +1,12 @@
 #include "projet.hpp"
 #include "doctest.h"
 
+Animal::Animal() {
+    id = 0;
+    coord = Coord(0, 0);
+    espece = Lapin;
+}
+
 int Animal::getId() const {
     return id;
 }
@@ -21,3 +27,8 @@ Espece Animal::getEspece() const {
     return espece;
 }
 
+void Animal::affiche() {
+    cout << "L'identifiant de l'animal est : " << getId() << endl;
+    pair<int, int> position = getCoord();
+    cout << "Coordonnees: (" << position.first << ", " << position.second << ")" << endl;
+}

@@ -4,6 +4,10 @@
 int TAILLEGRILLE = 40;
 
 // Classe Coord
+Coord::Coord() {
+    lig = 0;
+    col = 0;
+}
 
 Coord::Coord(int l, int c) : lig{l}, col{c}
 {

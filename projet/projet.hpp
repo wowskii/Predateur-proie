@@ -24,10 +24,6 @@ class Ensemble {
         int tire();
 };
 
-enum Espece {
-    Lapin,
-    Renard
-};
 class Coord
 {
 private:
@@ -35,6 +31,7 @@ private:
     int col;
 
 public:
+    Coord();
     Coord(int lig, int col);
     Coord(int n);
 
@@ -44,17 +41,26 @@ public:
     int toInt() const;
 };
 
+
+enum Espece {
+    Lapin,
+    Renard
+};
+
 class Animal{
     private :
         int id;
         Coord coord;
         Espece espece;
     public:
+        Animal();
         int getId() const;
         pair<int, int> getCoord() const;
         void setCoord(int x, int y);
         void setEspece(Espece e);
         Espece getEspece() const;
+        void affiche();
+        
 };
 
 #endif
