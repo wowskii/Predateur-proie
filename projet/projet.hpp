@@ -62,7 +62,7 @@ class Animal{
         Espece getEspece() const;
         void affiche();
         bool meurt();
-        bool 
+        bool seReproduire();
 };
 
 #endif

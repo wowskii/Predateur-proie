@@ -47,3 +47,9 @@ bool Animal::meurt(){
     estVivant = false;
     return true;
 }
+
+bool Animal::seReproduire(){
+    return true;
+}
+
+
