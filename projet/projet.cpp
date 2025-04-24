@@ -48,8 +48,21 @@ bool Animal::meurt(){
     return true;
 }
 
-bool Animal::seReproduire(){
-    return true;
+bool Animal::seReproduire(int voisinVides) const{
+    return voisinVides >= 2;
+}
+
+void Animal::mange(){
+    energie++;
+}
+
+void Animal::jeune(){
+    energie--;
+    if(energie <= 0) meurt();
+}
+
+int Animal::getEnergie() const {
+    return energie;
 }
 
 
