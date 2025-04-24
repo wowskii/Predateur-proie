@@ -42,3 +42,8 @@ void Animal::affiche() {
         cout << "Espèce inconnu";
     }
 }
+
+bool Animal::meurt(){
+    estVivant = false;
+    return true;
+}

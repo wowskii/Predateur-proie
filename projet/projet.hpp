@@ -52,6 +52,7 @@ class Animal{
         int id;
         Coord coord;
         Espece espece;
+        bool estVivant;
     public:
         Animal();
         int getId() const;
@@ -60,7 +61,8 @@ class Animal{
         void setEspece(Espece e);
         Espece getEspece() const;
         void affiche();
-        
+        bool meurt();
+        bool 
 };
 
 #endif
