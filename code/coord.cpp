@@ -3,6 +3,7 @@
 
 int TAILLEGRILLE = 40;
 
+
 // Classe Coord
 Coord::Coord() {
     lig = 0;
@@ -12,13 +13,13 @@ Coord::Coord() {
 Coord::Coord(int l, int c) : lig{l}, col{c}
 {
     if (l < 0 or c < 0 or l >= TAILLEGRILLE or c >= TAILLEGRILLE)
-        throw invalid_argument("Coordonnées invalides");
+        throw invalid_argument("Valeurs de coordonnées invalides");
 }
 
 Coord::Coord(int n)
 {
     if (n < 0 or n > TAILLEGRILLE * TAILLEGRILLE - 1)
-        throw invalid_argument("Valeur invalide");
+        throw invalid_argument("Valeur entière invalide");
     int c = n % TAILLEGRILLE;
     int l = n / TAILLEGRILLE;
     lig = l;
@@ -139,9 +140,9 @@ Ensemble Coord::voisine() const
     int imax = min(lig + 1, TAILLEGRILLE - 1);
     int jmin = max(col - 1, 0);
     int jmax = min(col + 1, TAILLEGRILLE - 1);
-    for (int i = imin; i < imax; i++)
+    for (int i = imin; i <= imax; i++)
     {
-        for (int j = jmin; j < jmax; j++)
+        for (int j = jmin; j <= jmax; j++)
         {
             if ((i != lig) || (j != col))
             {
@@ -154,12 +155,13 @@ Ensemble Coord::voisine() const
 
 TEST_CASE("voisines")
 {
+    srand(time(0));
     Ensemble ev1;
     ev1 = Coord{0, 0}.voisine();
     ostringstream oss1;
     oss1 << ev1;
     CHECK(oss1.str() == "{(0,1), (1,0), (1,1)}");
-    cout << ev1;
+    //cout << ev1;
 
     // Coins de la grille
     Coord coin1 = Coord{0, 0};
@@ -174,27 +176,32 @@ TEST_CASE("voisines")
     Coord coin4 = Coord{TAILLEGRILLE - 1, TAILLEGRILLE - 1};
     Ensemble evcoin4 = coin4.voisine();
     CHECK(evcoin4.cardinal() == 3);
-    cout << evcoin1 << evcoin2 << evcoin3 << evcoin4;
+    // cout << evcoin1 << evcoin2 << evcoin3 << evcoin4;
     // Bords de la grille
     for (int i = 0; i < 10; i++)
     {
         int l, c;
-        int quelbord = rand() % 4;
-        switch (quelbord)
+        int bord = rand() % 4;
+        switch (bord)
         {
         case 0:
-            l = 1 + rand() % TAILLEGRILLE - 1;
+            l = 1 + (rand() % (TAILLEGRILLE - 2));
             c = 0;
+            break;
         case 1:
             l = 0;
-            c = 1 + rand() % TAILLEGRILLE - 1;
-        case 3:
-            l = 1 + rand() % TAILLEGRILLE - 1;
+            c = 1 + (rand() % (TAILLEGRILLE - 2));
+            break;
+        case 2:
+            l = 1 + (rand() % (TAILLEGRILLE - 2));
             c = TAILLEGRILLE - 1;
-        case 4:
-            l = TAILLEGRILLE;
-            c = 1 + rand() % TAILLEGRILLE - 1;
+            break;
+        case 3:
+            l = TAILLEGRILLE - 1;
+            c = 1 + (rand() % (TAILLEGRILLE - 2));
+            break;
         }
+        // cout << bord << " " << l << " " << c << endl;
         CHECK(Coord{l, c}.voisine().cardinal() == 5);
     }
 }
@@ -299,6 +306,7 @@ TEST_CASE("Fonction ajoute")
 
 int Ensemble::tire()
 {
+    srand(time(0));
     if (estVide())
         throw runtime_error("Retrait impossible");
     int index = rand() % card;
