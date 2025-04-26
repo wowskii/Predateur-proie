@@ -1,4 +1,4 @@
-#include "projet.hpp"
+#include "animal.hpp"
 #include "doctest.h"
 
 Animal::Animal() {
@@ -11,8 +11,8 @@ int Animal::getId() const {
     return id;
 }
 
-pair<int, int> Animal::getCoord() const{
-    return make_pair(coord.getLig(), coord.getCol());
+Coord Animal::getCoord() const{
+    return coord;
 }
 
 void Animal::setCoord(int x, int y){
