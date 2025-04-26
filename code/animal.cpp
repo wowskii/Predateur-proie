@@ -29,8 +29,8 @@ Espece Animal::getEspece() const {
 
 void Animal::affiche() {
     cout << "L'identifiant de l'animal est : " << getId() << endl;
-    pair<int, int> position = getCoord();
-    cout << "Coordonnees: (" << position.first << ", " << position.second << ")" << endl;
+    Coord position = getCoord();
+    cout << "Coordonnees: (" << position << endl;
     cout << "Espece : ";
     if (getEspece() == Lapin){
         cout << "Lapin";

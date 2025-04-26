@@ -39,6 +39,10 @@ public:
     int getCol() const;
     Ensemble voisine() const;
     int toInt() const;
+
+    friend ostream &operator<<(ostream &out, const Coord &c);
+    friend bool operator==(const Coord &c1, const Coord &c2);
+    friend bool operator!=(const Coord &c1, const Coord &c2);
 };
 
 
