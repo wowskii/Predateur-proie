@@ -28,5 +28,16 @@ TEST_CASE("getIds") {
 
 
 int Population::reserve() {
-    return 0;
+    Ensemble ids = this->getIds();
+    int card = ids.cardinal();
+    int id;
+    for (int i = 0; i < card; i++) {
+        for (int j = 0; j < card; j++) {
+            if (i != ids[j]) {
+                id = i;
+                t.push_back(Animal());
+                return id;
+            }
+        }
+    }
 }
