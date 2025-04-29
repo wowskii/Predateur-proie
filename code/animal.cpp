@@ -62,6 +62,9 @@ Espece Animal::getEspece() const {
 TEST_CASE("Animal getEspece()"){
     Animal a;
     CHECK(a.getEspece() == Lapin);
+
+    a.setEspece(Renard);
+    CHECK(a.getEspece() == Renard);
 }
 
 void Animal::affiche() {
@@ -82,6 +85,12 @@ void Animal::affiche() {
 
 bool Animal::meurt(){
     return energie <= 0;
+}
+TEST_CASE("Animal meurt()"){
+    Animal a;
+    CHECK(a.meurt() == true);
+    a.mange(); 
+    CHECK(a.meurt() == false);
 }
 
 bool Animal::seReproduire(int voisinVides) const{

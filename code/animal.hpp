@@ -22,7 +22,7 @@ class Animal{
         Espece espece;
         Coord coord;
         bool estVivant = true;
-        int energie;
+        int energie = 0;
     public:
         Animal();
         Animal(int id, Espece e, Coord c) : id(id), espece(e), coord(c) {};
