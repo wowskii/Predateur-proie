@@ -1,6 +1,22 @@
 #include "animal.hpp"
 #include "doctest.h"
 
+int Animal::getId() const {
+    return id;
+}
+TEST_CASE("Animal getId()"){
+    Animal a;
+    CHECK(a.getId() == 0);
+}
+
+Coord Animal::getCoord() const{
+    return coord;
+}
+TEST_CASE("Animal getCoord()"){
+    Animal a;
+    CHECK(a.getCoord() == Coord(0, 0));
+}
+
 Animal::Animal() {
     id = 0;
     coord = Coord(0, 0);
@@ -13,16 +29,11 @@ TEST_CASE("Constructeur par defaut"){
     CHECK(a.getEspece() == Lapin);
 }
 
-int Animal::getId() const {
-    return id;
-}
-
-Coord Animal::getCoord() const{
-    return coord;
-}
-
 void Animal::setCoord(int x, int y){
     coord = Coord(x, y);
+}
+TEST_CASE("Animal setCoord()"){
+
 }
 
 void Animal::setEspece(Espece e){
