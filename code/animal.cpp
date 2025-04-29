@@ -43,15 +43,25 @@ TEST_CASE("Animal setCoord()"){
     CHECK(newCoord == Coord(3, 5));
 
     a.setCoord(10, 10);
-    CHECK(newCoord == Coord(10, 10));
+    Coord newCoord1 = a.getCoord();
+    CHECK(newCoord1 == Coord(10, 10));
 }
 
 void Animal::setEspece(Espece e){
     espece = e;
 }
+TEST_CASE("Animal setEspece()"){
+    Animal a;
+    a.setEspece(Renard);
+    CHECK(a.getEspece() == Renard);
+}
 
 Espece Animal::getEspece() const {
     return espece;
+}
+TEST_CASE("Animal getEspece()"){
+    Animal a;
+    CHECK(a.getEspece() == Lapin);
 }
 
 void Animal::affiche() {
