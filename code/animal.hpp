@@ -36,6 +36,7 @@ class Animal{
         void mange();
         void jeune();
         int getEnergie() const;
+        bool operator==(const Coord& autre) const;
 };
 
 #endif

@@ -21,9 +21,9 @@ class Population {
     Animal get(int id) const;
     Ensemble getIds() const;
 
-    int reserve();
-    void set();
-    void supprime(int id);
+    // int reserve();
+    // void set();
+    // void supprime(int id);
 };
 
 #endif

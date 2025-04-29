@@ -6,6 +6,12 @@ Animal::Animal() {
     coord = Coord(0, 0);
     espece = Lapin;
 }
+TEST_CASE("Constructeur par defaut"){
+    Animal a;
+    CHECK(a.getId() == 0);
+    CHECK(a.getCoord() == Coord(0, 0));
+    CHECK(a.getEspece() == Lapin);
+}
 
 int Animal::getId() const {
     return id;

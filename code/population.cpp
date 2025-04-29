@@ -22,22 +22,22 @@ Ensemble Population::getIds() const {
 }
 
 
-TEST_CASE("getIds") {
-    Population p();
-}
+// TEST_CASE("getIds") {
+//     Population p();
+// }
 
 
-int Population::reserve() {
-    Ensemble ids = this->getIds();
-    int card = ids.cardinal();
-    int id;
-    for (int i = 0; i < card; i++) {
-        for (int j = 0; j < card; j++) {
-            if (i != ids[j]) {
-                id = i;
-                t.push_back(Animal());
-                return id;
-            }
-        }
-    }
-}
+// int Population::reserve() {
+//     Ensemble ids = this->getIds();
+//     int card = ids.cardinal();
+//     int id;
+//     for (int i = 0; i < card; i++) {
+//         for (int j = 0; j < card; j++) {
+//             if (i != ids[j]) {
+//                 id = i;
+//                 t.push_back(Animal());
+//                 return id;
+//             }
+//         }
+//     }
+// }
