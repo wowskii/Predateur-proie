@@ -71,8 +71,7 @@ void Animal::affiche() {
 }
 
 bool Animal::meurt(){
-    estVivant = false;
-    return true;
+    return energie <= 0;
 }
 
 bool Animal::seReproduire(int voisinVides) const{
@@ -85,7 +84,6 @@ void Animal::mange(){
 
 void Animal::jeune(){
     energie--;
-    if(energie <= 0) meurt();
 }
 
 int Animal::getEnergie() const {

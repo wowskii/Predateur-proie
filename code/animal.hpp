@@ -21,7 +21,7 @@ class Animal{
         int id;
         Espece espece;
         Coord coord;
-        bool estVivant;
+        bool estVivant = true;
         int energie;
     public:
         Animal();
