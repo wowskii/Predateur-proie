@@ -96,17 +96,42 @@ TEST_CASE("Animal meurt()"){
 bool Animal::seReproduire(int voisinVides) const{
     return voisinVides >= 2;
 }
-
-void Animal::mange(){
-    energie++;
-}
-
-void Animal::jeune(){
-    energie--;
+TEST_CASE("Animal seReproduire()"){
+    Animal a;
+    CHECK(a.seReproduire(0) == false);
+    CHECK(a.seReproduire(1) == false);
+    CHECK(a.seReproduire(2) == true);
+    CHECK(a.seReproduire(3) == true);
 }
 
 int Animal::getEnergie() const {
     return energie;
 }
+
+void Animal::mange(){
+    energie++;
+}
+TEST_CASE("Animal mange()"){
+    Animal a;
+    int test = a.getEnergie();
+    a.mange();
+    CHECK(a.getEnergie() == test + 1);
+}
+
+void Animal::jeune(){
+    energie--;
+}
+TEST_CASE("Aninmal mange()"){
+    Animal a;
+    a.mange();
+    a.jeune();
+    CHECK(a.getEnergie() == 0);
+    a.mange();
+    a.mange();
+    a.jeune();
+    CHECK(a.getEnergie() == 1);
+}
+
+
 
 
