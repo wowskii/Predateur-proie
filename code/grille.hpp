@@ -12,9 +12,12 @@
 
 using namespace std;
 
+const int LARGEUR = 10;
+const int LONGUEUR = 10;
+
 class Grille {
     private:
-        Animal animal;
+        vector<vector<int>> cases;
     
     public:
         bool caseVide();
