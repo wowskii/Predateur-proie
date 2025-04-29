@@ -19,12 +19,13 @@ enum Espece {
 class Animal{
     private :
         int id;
-        Coord coord;
         Espece espece;
+        Coord coord;
         bool estVivant;
         int energie;
     public:
         Animal();
+        Animal(int id, Espece e, Coord c) : id(id), espece(e), coord(c) {};
         int getId() const;
         Coord getCoord() const;
         void setCoord(int x, int y);

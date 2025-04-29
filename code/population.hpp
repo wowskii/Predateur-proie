@@ -13,17 +13,17 @@ using namespace std;
 
 class Population {
     private:
-    vector<Animal> t;
-
+        std::unordered_map<int, Animal> map;
+        int nextId = 0;
+    
     public:
-    Population();
+    Population() : map() {}
     
     Animal get(int id) const;
     Ensemble getIds() const;
-
-    // int reserve();
-    // void set();
-    // void supprime(int id);
+    int reserve();
+    void set(int id, const Animal &animal);
+    void supprime(int id);
 };
 
 #endif

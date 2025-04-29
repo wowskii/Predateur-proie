@@ -1,43 +1,50 @@
 #include "population.hpp"
 #include "doctest.h"
+#include <unordered_map>
 
-Population::Population() {
-    vector<Animal> t = {};
-}
-
-Animal Population::get(int id) const {
-    for (int i = 0; i < t.size(); i++) {
-        if (t[i].getId() == id) return t[i];
+Animal Population::get(int id) const
+{
+    auto iter = map.find(id);
+    if (iter != map.end())
+    {
+        return iter->second;
     }
     return Animal();
 }
 
-
-Ensemble Population::getIds() const {
+Ensemble Population::getIds() const
+{
     Ensemble e;
-    for (auto a : t) {
-        e.ajoute(a.getId());
+    for (const auto &pair : map)
+    {
+        e.ajoute(pair.first);
     }
     return e;
 }
 
+int Population::reserve()
+{
+    while (map.find(nextId) != map.end())
+    {
+        nextId++;
+    }
+    map[nextId] = Animal();
+    return nextId++;
+}
 
-// TEST_CASE("getIds") {
-//     Population p();
-// }
+void Population::set(int id, const Animal &animal)
+{
+    if (map.find(id) != map.end())
+    {
+        map[id] = animal;
+    }
+    else
+    {
+        throw std::invalid_argument("ID not reserved");
+    }
+}
 
-
-// int Population::reserve() {
-//     Ensemble ids = this->getIds();
-//     int card = ids.cardinal();
-//     int id;
-//     for (int i = 0; i < card; i++) {
-//         for (int j = 0; j < card; j++) {
-//             if (i != ids[j]) {
-//                 id = i;
-//                 t.push_back(Animal());
-//                 return id;
-//             }
-//         }
-//     }
-// }
+void Population::supprime(int id)
+{
+    map.erase(id);
+}

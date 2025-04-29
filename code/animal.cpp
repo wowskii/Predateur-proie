@@ -22,6 +22,7 @@ Animal::Animal() {
     coord = Coord(0, 0);
     espece = Lapin;
 }
+
 TEST_CASE("Constructeur par defaut"){
     Animal a;
     CHECK(a.getId() == 0);
