@@ -33,7 +33,16 @@ void Animal::setCoord(int x, int y){
     coord = Coord(x, y);
 }
 TEST_CASE("Animal setCoord()"){
+    Animal a;
+    Coord defaut = a.getCoord();
+    CHECK(defaut == Coord(0, 0));
 
+    a.setCoord(3, 5);
+    Coord newCoord = a.getCoord();
+    CHECK(newCoord == Coord(3, 5));
+
+    a.setCoord(10, 10);
+    CHECK(newCoord == Coord(10, 10));
 }
 
 void Animal::setEspece(Espece e){
