@@ -128,6 +128,10 @@ TEST_CASE("Aninmal mange()"){
     CHECK(a.getEnergie() == 1);
 }
 
+bool Animal::isVivant() const{
+    return estVivant;
+}
+
 
 
 
