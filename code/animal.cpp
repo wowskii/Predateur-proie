@@ -6,7 +6,7 @@ int Animal::getId() const {
 }
 TEST_CASE("Animal getId()"){
     Animal a;
-    CHECK(a.getId() == 0);
+    CHECK(a.getId() == -1);
 }
 
 Coord Animal::getCoord() const{
@@ -17,15 +17,11 @@ TEST_CASE("Animal getCoord()"){
     CHECK(a.getCoord() == Coord(0, 0));
 }
 
-Animal::Animal() {
-    id = 0;
-    coord = Coord(0, 0);
-    espece = Lapin;
-}
+Animal::Animal() : id(-1), espece(Lapin), coord(0, 0), estVivant(false), energie(0) {};
 
 TEST_CASE("Constructeur par defaut"){
     Animal a;
-    CHECK(a.getId() == 0);
+    CHECK(a.getId() == -1);
     CHECK(a.getCoord() == Coord(0, 0));
     CHECK(a.getEspece() == Lapin);
 }
