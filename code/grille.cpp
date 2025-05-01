@@ -1,6 +1,35 @@
 #include "grille.hpp"
 #include "doctest.h"
 
-bool Grille::caseVide(int x, int y) const {
-    return !cases[x][y].isVivant();
+
+Grille::Grille() {
+    cases = vector<vector<int>>(LONGUEUR);
+    for (int i = 0; i < LONGUEUR; i++) {
+        cases[i] = vector<int>(LARGEUR, -1);
+    }
+}
+
+TEST_CASE("Constructeur de grille") {
+    Grille g{};
+    for (int i = 0; i < LONGUEUR; i++) {
+        for (int j = 0; j < LARGEUR; j++) {
+            CHECK(g.getCase(Coord(i,j)) == -1);
+        }
+    }
+}
+
+bool Grille::caseVide(Coord c) const {
+    return cases[c.getLig()][c.getCol()] == -1;
+}
+
+int Grille::getCase(Coord c) const {
+    return cases[c.getLig()][c.getCol()];
+}
+
+void Grille::videCase(Coord c) {
+    cases[c.getLig()][c.getCol()] = -1;
+}
+
+void Grille::setCase(Coord c, const Animal& a) {
+    cases[c.getLig()][c.getCol()] = a.getId();
 }

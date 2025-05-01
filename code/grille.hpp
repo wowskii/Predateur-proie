@@ -17,13 +17,14 @@ const int LONGUEUR = 10;
 
 class Grille {
     private:
-        vector<vector<Animal>> cases;
+        vector<vector<int>> cases;
     
     public:
-        bool caseVide(int x, int y) const;
-        void getCase(int x, int y) const;
-        void videCase(int x, int y);
-        void setCase(int x, int y, const Animal& a);
+        Grille();
+        bool caseVide(Coord c) const;
+        int getCase(Coord c) const;
+        void videCase(Coord c);
+        void setCase(Coord c, const Animal& a);
     
 };
 
