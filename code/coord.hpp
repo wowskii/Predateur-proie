@@ -9,6 +9,7 @@
 
 using namespace std;
 
+const int TAILLEGRILLE = 40;
 class Ensemble { 
     private :
         vector<int> t;

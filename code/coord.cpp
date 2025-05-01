@@ -1,8 +1,6 @@
 #include "coord.hpp"
 #include "doctest.h"
 
-int TAILLEGRILLE = 40;
-
 
 // Classe Coord
 Coord::Coord() {

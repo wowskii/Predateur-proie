@@ -12,9 +12,6 @@
 
 using namespace std;
 
-const int LARGEUR = 10;
-const int LONGUEUR = 10;
-
 class Grille {
     private:
         vector<vector<int>> cases;

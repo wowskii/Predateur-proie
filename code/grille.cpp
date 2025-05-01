@@ -3,16 +3,16 @@
 
 
 Grille::Grille() {
-    cases = vector<vector<int>>(LONGUEUR);
-    for (int i = 0; i < LONGUEUR; i++) {
-        cases[i] = vector<int>(LARGEUR, -1);
+    cases = vector<vector<int>>(TAILLEGRILLE);
+    for (int i = 0; i < TAILLEGRILLE; i++) {
+        cases[i] = vector<int>(TAILLEGRILLE, -1);
     }
 }
 
 TEST_CASE("Constructeur de grille") {
     Grille g{};
-    for (int i = 0; i < LONGUEUR; i++) {
-        for (int j = 0; j < LARGEUR; j++) {
+    for (int i = 0; i < TAILLEGRILLE; i++) {
+        for (int j = 0; j < TAILLEGRILLE; j++) {
             CHECK(g.getCase(Coord(i,j)) == -1);
         }
     }
