@@ -24,7 +24,7 @@ class Grille {
         bool caseVide(Coord c) const;
         int getCase(Coord c) const;
         void videCase(Coord c);
-        void setCase(Coord c, int id);
+        int setCase(Coord c, int id);
     
 };
 
