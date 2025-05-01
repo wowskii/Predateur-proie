@@ -30,6 +30,6 @@ void Grille::videCase(Coord c) {
     cases[c.getLig()][c.getCol()] = -1;
 }
 
-void Grille::setCase(Coord c, const Animal& a) {
-    cases[c.getLig()][c.getCol()] = a.getId();
+void Grille::setCase(Coord c, int id) {
+    cases[c.getLig()][c.getCol()] = id;
 }
