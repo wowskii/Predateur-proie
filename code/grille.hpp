@@ -9,6 +9,7 @@
 #include <vector>
 #include <stdexcept>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -22,7 +23,8 @@ class Grille {
         int getCase(Coord c) const;
         void videCase(Coord c);
         int setCase(Coord c, int id);
-    
+        
+        friend ostream& operator<<(ostream &out, const Grille &g);
 };
 
 #endif

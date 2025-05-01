@@ -45,6 +45,7 @@ TEST_CASE("Test general grille") {
     //TEST getCase
     CHECK(g.getCase(Coord(2,5)) == test1);
     CHECK(g.getCase(Coord(5,5)) == test2);
+    cout << g;
 
     //TEST videCase
     g.videCase(Coord(5,5));
@@ -53,4 +54,15 @@ TEST_CASE("Test general grille") {
     //TEST caseVide
     CHECK(g.caseVide(Coord(5,5)));
     CHECK(g.caseVide(Coord(4,7)));
+}
+
+ostream& operator<<(ostream &out, const Grille &g) {
+    for (int i = 0; i < TAILLEGRILLE; i++) {
+        for (int j = 0; j < TAILLEGRILLE; j++) {
+            out << setw(3) << g.getCase(Coord(i,j));
+            if (j < TAILLEGRILLE - 1) out << ", ";
+        }
+        out << endl;
+    }
+    return out;
 }

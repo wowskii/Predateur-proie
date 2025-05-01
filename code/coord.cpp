@@ -223,7 +223,7 @@ ostream &operator<<(ostream &out, const Ensemble &e)
     e.affiche(out);
     return out;
 }
-TEST_CASE("Affichage d'ensemle")
+TEST_CASE("Affichage d'ensemble")
 {
     Ensemble c1;
     c1.ajoute(2);
