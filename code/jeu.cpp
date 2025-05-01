@@ -18,9 +18,12 @@ Jeu::Jeu(float probLapins, float probRenard) {
         if (r < probLapinsPourCent) ajouteAnimal(Lapin, Coord(i));
         else if (r > probLapinsPourCent && r < probLapinsPourCent + probRenardPourCent) ajouteAnimal(Renard, Coord(i));
     }
+    //cout << g;
 }
 
-
+TEST_CASE("Test visuel Constructeur Jeu") {
+    //Jeu j(0.4, 0.1);
+}
 
 int Jeu::ajouteAnimal(Espece e, Coord c) {
     int id = g.setCase(c, p.set(Animal(-1, e, c)));

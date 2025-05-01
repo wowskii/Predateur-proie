@@ -45,7 +45,7 @@ TEST_CASE("Test general grille") {
     //TEST getCase
     CHECK(g.getCase(Coord(2,5)) == test1);
     CHECK(g.getCase(Coord(5,5)) == test2);
-    cout << g;
+    //cout << g;
 
     //TEST videCase
     g.videCase(Coord(5,5));
