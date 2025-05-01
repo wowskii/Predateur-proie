@@ -24,13 +24,12 @@ Ensemble Population::getIds() const
 
 TEST_CASE("getIds") {
     Population p;
-    int id;
-    id = p.reserve();
-    p.set(id, Animal(id, Lapin, Coord(5,15)));
-    id = p.reserve();
-    p.set(id, Animal(id, Renard, Coord(5,15)));
-    id = p.reserve();
-    p.set(id, Animal(id, Lapin, Coord(5,15)));
+
+    p.set(Animal(-1, Lapin, Coord(5,15)));
+
+    p.set(Animal(-1, Renard, Coord(5,15)));
+
+    p.set(Animal(-1, Lapin, Coord(5,15)));
     CHECK(p.getIds().cardinal() == 3);
     //cout << p.getIds() << endl;
 }
@@ -45,11 +44,14 @@ int Population::reserve()
     return nextId++;
 }
 
-void Population::set(int id, const Animal &animal)
+int Population::set(Animal animal)
 {
+    int id = reserve();
     if (map.find(id) != map.end())
     {
+        animal.setId(id);
         map[id] = animal;
+        return id;
     }
     else
     {
@@ -59,8 +61,7 @@ void Population::set(int id, const Animal &animal)
 
 TEST_CASE("get, set et reserve") {
     Population p;
-    int id = p.reserve();
-    p.set(id, Animal(id, Renard, Coord(2,4)));
+    int id = p.set(Animal(-1, Renard, Coord(2,4)));
 
     CHECK(p.get(id).getId() == id);
     CHECK(p.get(id).getEspece() == Espece::Renard);
@@ -74,13 +75,9 @@ void Population::supprime(int id)
 
 TEST_CASE("supprime") {
     Population p;
-    int id;
-    id = p.reserve();
-    p.set(id, Animal(id, Lapin, Coord(5,15)));
-    id = p.reserve();
-    p.set(id, Animal(id, Renard, Coord(5,15)));
-    id = p.reserve();
-    p.set(id, Animal(id, Lapin, Coord(5,15)));
-    p.supprime(id);
+    p.set(Animal(-1, Lapin, Coord(5,15)));
+    p.set(Animal(-1, Renard, Coord(5,15)));
+    int idASupprimer = p.set(Animal(-1, Lapin, Coord(5,15)));
+    p.supprime(idASupprimer);
     CHECK(p.getIds().cardinal() == 2);
 }

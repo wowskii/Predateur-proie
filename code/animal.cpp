@@ -9,6 +9,10 @@ TEST_CASE("Animal getId()"){
     CHECK(a.getId() == -1);
 }
 
+void Animal::setId(int newid) {
+    id = newid;
+}
+
 Coord Animal::getCoord() const{
     return coord;
 }

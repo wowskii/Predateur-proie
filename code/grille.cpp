@@ -33,3 +33,10 @@ void Grille::videCase(Coord c) {
 void Grille::setCase(Coord c, int id) {
     cases[c.getLig()][c.getCol()] = id;
 }
+
+// TEST_CASE("Test general") {
+//     Grille g;
+//     Population p;
+//     int id = reserve();
+//     p.set(id, )
+// }

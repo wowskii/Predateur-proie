@@ -27,6 +27,7 @@ class Animal{
         Animal();
         Animal(int id, Espece e, Coord c) : id(id), espece(e), coord(c) {};
         int getId() const;
+        void setId(int newid);
         Coord getCoord() const;
         void setCoord(int x, int y);
         void setEspece(Espece e);
