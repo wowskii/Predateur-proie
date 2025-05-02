@@ -14,12 +14,12 @@ Jeu::Jeu(float probLapins, float probRenard) {
     srand(time(0));
     for (int i = 0; i < TAILLEGRILLE * TAILLEGRILLE; i++) {
         int r = rand() % 100;
-        Coord c(i % TAILLEGRILLE, i / TAILLEGRILLE);
+        Coord c(i);
     
         if (r < probLapinsPourCent) ajouteAnimal(Lapin, c);
         else if (r < probLapinsPourCent + probRenardPourCent) ajouteAnimal(Renard, c);
     }
-    //cout << g;
+    cout << g;
 }
 
 TEST_CASE("Test visuel Constructeur Jeu") {
