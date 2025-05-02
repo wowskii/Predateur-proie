@@ -14,7 +14,7 @@ class Ensemble {
     private :
         vector<int> t;
         int card;
-        static const int MAXCARD = 100;
+        static const int MAXCARD = 2000;
 
     public :
         Ensemble();
