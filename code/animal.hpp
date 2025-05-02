@@ -25,7 +25,7 @@ class Animal{
         int energie = 0;
     public:
         Animal();
-        Animal(int id, Espece e, Coord c) : id(id), espece(e), coord(c) {};
+        Animal(int id, Espece e, Coord c, bool vivant = true, int energy = 0) : id(id), espece(e), coord(c), estVivant(vivant), energie(energy) {};
         int getId() const;
         void setId(int newid);
         Coord getCoord() const;
