@@ -99,7 +99,7 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
 }
 TEST_CASE("Jeu::voisinsEspece()"){
     
-    Jeu j(0.0f, 0.0f);
+    Jeu j(0.0, 0.0);
     
     Coord centre = Coord(2, 2); 
     
