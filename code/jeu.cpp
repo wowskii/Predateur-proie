@@ -98,23 +98,19 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
     return res;
 }
 TEST_CASE("Jeu::voisinsEspece()"){
-    const int TAILLE_TEST = 5; // Taille de grille pour le test
     
-    // Création d'un jeu vide (sans animaux aléatoires)
-    Jeu j(0.0f, 0.0f); // 0% lapins, 0% renards
+    Jeu j(0.0f, 0.0f);
     
-    // Configuration manuelle pour le test
-    Coord centre(2, 2); // Centre de la grille 5x5
+    Coord centre(2, 2); 
     
-    // Placement des animaux de test
     j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord(1, 2)); // Nord
-    j.ajouteAnimal(Espece::Lapin, Coord(3, 2)); // Sud
-    j.ajouteAnimal(Espece::Renard, Coord(2, 1)); // Ouest - ne doit pas compter
+    j.ajouteAnimal(Espece::Lapin, Coord(1, 2)); 
+    j.ajouteAnimal(Espece::Lapin, Coord(3, 2)); 
+    j.ajouteAnimal(Espece::Renard, Coord(2, 1)); 
     
-    // Test : voisins lapins autour du centre
+   
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
     
-    // Vérifications
-    CHECK(voisinsLapins.cardinal() == 2); // Doit trouver (1,2) et (3,2)
+   
+    CHECK(voisinsLapins.cardinal() == 2); 
 }
