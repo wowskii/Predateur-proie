@@ -73,15 +73,27 @@ TEST_CASE("Jeu::voisinsVides()"){
     CHECK(vides.cardinal() == 8);
 }
 
-// Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
-//     Ensemble resultat;
-//     int x = c.getLig();
-//     int y = c.getCol();
-//     for(int dx = -1; dx <= 1; dx++){
-//         for(int dy = -1; dy <= 1; dx++){
-//             if(dx == 0 && dy == 0) continue;
+Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
+    Ensemble res;
+    int x = c.getLig();
+    int y = c.getCol();
+    for(int dx = -1; dx <= 1; dx++){
+        for(int dy = -1; dy <= 1; dx++){
+            if(dx == 0 && dy == 0) continue;
             
-//             Coord voisin(x + dx, y + dy);
-//         }
-//     }
-// }
+            Coord voisin(x + dx, y + dy);
+            if((voisin.getLig() >= 0 && voisin.getLig() <= TAILLEGRILLE) && (voisin.getCol() <= 0 && voisin.getCol() <= TAILLEGRILLE)){
+                if(!g.caseVide(voisin)){
+                    int id = g.getCase(voisin);
+                    const Animal& animal = p.get(id);
+                    if(animal.getEspece() == e){
+                        int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
+                        res.ajoute(coord);
+                    }
+                }
+            }
+
+        }
+    }
+    return res;
+}
