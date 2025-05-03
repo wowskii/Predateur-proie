@@ -7,9 +7,12 @@
 #include <sstream>
 #include <ctime>
 
+#ifndef TAILLEGRILLE
+#define TAILLEGRILLE 20 
+#endif
+
 using namespace std;
 
-const int TAILLEGRILLE = 20;
 class Ensemble { 
     private :
         vector<int> t;

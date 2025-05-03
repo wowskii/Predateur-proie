@@ -101,7 +101,7 @@ TEST_CASE("Jeu::voisinsEspece()"){
     
     Jeu j(0.0f, 0.0f);
     
-    Coord centre(2, 2); 
+    Coord centre = Coord(2, 2); 
     
     j.ajouteAnimal(Espece::Renard, centre);
     j.ajouteAnimal(Espece::Lapin, Coord(1, 2)); 
