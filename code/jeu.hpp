@@ -22,6 +22,8 @@ class Jeu {
     Jeu(float probLapins, float probRenard);
     int ajouteAnimal(Espece e, Coord c);
     void verifieGrille() const;
+    Ensemble voisinsVides(Coord c) const;
+    Ensemble voisinsEspece(Coord c, Espece e) const;
 };
 
 

@@ -47,3 +47,34 @@ TEST_CASE("Jeu::verifieGrille()"){
     int test = jeu.ajouteAnimal(Lapin, c);
     CHECK_NOTHROW(jeu.verifieGrille());
 }
+
+Ensemble Jeu::voisinsVides(Coord c) const{
+    Ensemble res;
+    int x = c.getLig();
+    int y = c.getCol();
+    for(int dx = -1; dx <= 1; dx++){
+        for(int dy = -1; dy <= 1; dy++){
+            if(dx == 0 && dy == 0) continue;
+
+            Coord voisin(x + dx, y + dy);
+            if(g.caseVide(voisin)) {
+                int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
+                res.ajoute(coord);
+            }
+        }
+    }
+    return res;
+}
+
+Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
+    Ensemble resultat;
+    int x = c.getLig();
+    int y = c.getCol();
+    for(int dx = -1; dx <= 1; dx++){
+        for(int dy = -1; dy <= 1; dx++){
+            if(dx == 0 && dy == 0) continue;
+            
+            Coord voisin(x + dx, y + dy);
+        }
+    }
+}
