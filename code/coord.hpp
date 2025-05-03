@@ -24,6 +24,8 @@ class Ensemble {
         friend ostream& operator<<(ostream& out, const Ensemble& e);
         void ajoute(int a);
         int tire();
+        std::vector<int>::const_iterator begin() const { return t.begin(); }
+        std::vector<int>::const_iterator end() const { return t.end(); }
 };
 class Coord
 {

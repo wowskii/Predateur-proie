@@ -30,3 +30,14 @@ int Jeu::ajouteAnimal(Espece e, Coord c) {
     int id = g.setCase(c, p.set(Animal(-1, e, c)));
     return id;
 }
+
+void Jeu::verifieGrille() const {
+    for (int id : p.getIds()) {
+        const Animal& animal = p.get(id);
+        Coord coord = animal.getCoord();
+        
+        if (g.getCase(coord) != id) {
+            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé ");
+        }
+    }
+}
