@@ -41,3 +41,9 @@ void Jeu::verifieGrille() const {
         }
     }
 }
+TEST_CASE("Jeu::verifieGrille()"){
+    Jeu jeu(0.0, 0.0);
+    Coord c(2,3);
+    int test = jeu.ajouteAnimal(Lapin, c);
+    CHECK_NOTHROW(jeu.verifieGrille());
+}
