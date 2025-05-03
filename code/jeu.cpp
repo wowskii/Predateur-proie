@@ -65,16 +65,23 @@ Ensemble Jeu::voisinsVides(Coord c) const{
     }
     return res;
 }
-
-Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
-    Ensemble resultat;
-    int x = c.getLig();
-    int y = c.getCol();
-    for(int dx = -1; dx <= 1; dx++){
-        for(int dy = -1; dy <= 1; dx++){
-            if(dx == 0 && dy == 0) continue;
-            
-            Coord voisin(x + dx, y + dy);
-        }
-    }
+TEST_CASE("Jeu::voisinsVides()"){
+    Jeu j(0.0, 0.0); 
+    Coord c(1, 1);
+    j.ajouteAnimal(Lapin, c); 
+    Ensemble vides = j.voisinsVides(c);
+    CHECK(vides.cardinal() == 8);
 }
+
+// Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
+//     Ensemble resultat;
+//     int x = c.getLig();
+//     int y = c.getCol();
+//     for(int dx = -1; dx <= 1; dx++){
+//         for(int dy = -1; dy <= 1; dx++){
+//             if(dx == 0 && dy == 0) continue;
+            
+//             Coord voisin(x + dx, y + dy);
+//         }
+//     }
+// }
