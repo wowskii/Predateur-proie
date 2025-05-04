@@ -24,6 +24,7 @@ class Jeu {
     void verifieGrille() const;
     Ensemble voisinsVides(Coord c) const;
     Ensemble voisinsEspece(Coord c, Espece e) const;
+    void deplacerAnimal(Animal &a);
 };
 
 
