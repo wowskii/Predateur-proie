@@ -10,8 +10,9 @@ const int Jeu::FoodReprod = 8;
 const int Jeu::MaxFood = 10;
 const float Jeu::ProbBirthRenard = 0.05f;
 
-Animal Jeu::getAnimal(int id) {
-    return p.get(id);  // Maintenant valide car p.get() retourne une référence valide
+Animal Jeu::getAnimal(int id)
+{
+    return p.get(id); // Maintenant valide car p.get() retourne une référence valide
 }
 Jeu::Jeu(float probLapins, float probRenard)
 {
@@ -23,7 +24,6 @@ Jeu::Jeu(float probLapins, float probRenard)
 
     int probLapinsPourCent = 100 * probLapins;
     int probRenardPourCent = 100 * probRenard;
-    srand(time(0));
     for (int i = 0; i < TAILLEGRILLE * TAILLEGRILLE; i++)
     {
         int r = rand() % 100;
@@ -48,15 +48,17 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
     return id;
 }
 
-int Jeu::mortAnimal(Animal a) {
+int Jeu::mortAnimal(Animal a)
+{
     p.supprime(a.getId());
     g.videCase(a.getCoord());
     return a.getId();
 }
-TEST_CASE("Jeu::mortAnimal()") {
+TEST_CASE("Jeu::mortAnimal()")
+{
     Jeu j(0.0, 0.0);
     Coord c(5, 5);
-    Coord voisin(5,6);
+    Coord voisin(5, 6);
 
     int id = j.ajouteAnimal(Espece::Lapin, c);
     CHECK(j.getAnimal(id).getCoord() == c);
@@ -67,119 +69,176 @@ TEST_CASE("Jeu::mortAnimal()") {
     CHECK(j.voisinsVides(voisin).cardinal() == 8);
 }
 
-void Jeu::verifieGrille() const {
-    for (int id : p.getIds()) {
-        const Animal& animal = p.get(id);
+void Jeu::verifieGrille() const
+{
+    for (int id : p.getIds())
+    {
+        const Animal &animal = p.get(id);
         Coord coord = animal.getCoord();
-        
-        if (g.getCase(coord) != id) {
+
+        if (g.getCase(coord) != id)
+        {
             throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé ");
         }
     }
 }
-TEST_CASE("Jeu::verifieGrille()"){
+TEST_CASE("Jeu::verifieGrille()")
+{
     Jeu jeu(0.0, 0.0);
-    Coord c(2,3);
+    Coord c(2, 3);
     int test = jeu.ajouteAnimal(Lapin, c);
     CHECK_NOTHROW(jeu.verifieGrille());
 }
 
-Ensemble Jeu::voisinsVides(Coord c) const{
-    Ensemble res;
-    int x = c.getLig();
-    int y = c.getCol();
-    for(int dx = -1; dx <= 1; dx++){
-        for(int dy = -1; dy <= 1; dy++){
-            if(dx == 0 && dy == 0) continue;
+Ensemble Jeu::voisinsVides(Coord c) const
+{
+    // Ensemble res;
+    // int x = c.getLig();
+    // int y = c.getCol();
+    // for(int dx = -1; dx <= 1; dx++){
+    //     for(int dy = -1; dy <= 1; dy++){
+    //         if(dx == 0 && dy == 0) continue;
 
-            Coord voisin(x + dx, y + dy);
-            if(g.caseVide(voisin)) {
-                int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
-                res.ajoute(coord);
+    //         Coord voisin(x + dx, y + dy);
+    //         if(g.caseVide(voisin)) {
+    //             int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
+    //             res.ajoute(coord);
+    //         }
+    //     }
+    // }
+    // return res;
+    {
+        Ensemble ev;
+        int imin = max(c.getLig() - 1, 0);
+        int imax = min(c.getLig() + 1, TAILLEGRILLE - 1);
+        int jmin = max(c.getCol() - 1, 0);
+        int jmax = min(c.getCol() + 1, TAILLEGRILLE - 1);
+        for (int i = imin; i <= imax; i++)
+        {
+            for (int j = jmin; j <= jmax; j++)
+            {
+                if ((i != c.getLig()) || (j != c.getCol()) && g.caseVide(Coord(i, j)))
+                {
+                    ev.ajoute(Coord{i, j}.toInt());
+                }
             }
         }
+        return ev;
     }
-    return res;
 }
-TEST_CASE("Jeu::voisinsVides()"){
-    Jeu j(0.0, 0.0); 
+TEST_CASE("Jeu::voisinsVides()")
+{
+    Jeu j(0.0, 0.0);
     Coord c(1, 1);
-    j.ajouteAnimal(Lapin, c); 
+    j.ajouteAnimal(Lapin, c);
     Ensemble vides = j.voisinsVides(c);
     CHECK(vides.cardinal() == 8);
+
+    Coord c2(TAILLEGRILLE - 1, TAILLEGRILLE - 1);
+    j.ajouteAnimal(Lapin, c2);
+    Ensemble vides2 = j.voisinsVides(c2);
+    CHECK(vides2.cardinal() == 3);
 }
 
-Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
-    Ensemble res;
-    int x = c.getLig();
-    int y = c.getCol();
-    for (int dx = -1; dx <= 1; dx++) {
-        for (int dy = -1; dy <= 1; dy++) {
-            if (dx == 0 && dy == 0) continue;
+Ensemble Jeu::voisinsEspece(Coord c, Espece e) const
+{
+    //     Ensemble res;
+    //     int x = c.getLig();
+    //     int y = c.getCol();
+    //     for (int dx = -1; dx <= 1; dx++) {
+    //         for (int dy = -1; dy <= 1; dy++) {
+    //             if (dx == 0 && dy == 0) continue;
 
-            Coord voisin(x + dx, y + dy);
-            
-            if (voisin.getLig() >= 0 && voisin.getLig() < TAILLEGRILLE && voisin.getCol() >= 0 && voisin.getCol() < TAILLEGRILLE) {
-                if (!g.caseVide(voisin)) {
-                    int id = g.getCase(voisin);
-                    const Animal& animal = p.get(id);
-                    if (animal.getEspece() == e) {
-                        int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
-                        res.ajoute(coord);
-                    }
+    //             Coord voisin(x + dx, y + dy);
+
+    //             if (voisin.getLig() >= 0 && voisin.getLig() < TAILLEGRILLE && voisin.getCol() >= 0 && voisin.getCol() < TAILLEGRILLE) {
+    //                 if (!g.caseVide(voisin)) {
+    //                     int id = g.getCase(voisin);
+    //                     const Animal& animal = p.get(id);
+    //                     if (animal.getEspece() == e) {
+    //                         int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
+    //                         res.ajoute(coord);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return res;
+    Ensemble ev;
+    int imin = max(c.getLig() - 1, 0);
+    int imax = min(c.getLig() + 1, TAILLEGRILLE - 1);
+    int jmin = max(c.getCol() - 1, 0);
+    int jmax = min(c.getCol() + 1, TAILLEGRILLE - 1);
+    for (int i = imin; i <= imax; i++)
+    {
+        for (int j = jmin; j <= jmax; j++)
+        {
+            Coord voisin = Coord(i,j);
+            if ((i != c.getLig() || j != c.getCol()) && !g.caseVide(voisin))
+            {
+                int id = g.getCase(voisin);
+                const Animal &animal = p.get(id);
+                if (animal.getEspece() == e)
+                {
+                    ev.ajoute(voisin.toInt());
                 }
             }
         }
     }
-    return res;
+    return ev;
 }
-TEST_CASE("Jeu::voisinsEspece()"){
-    Jeu j(0.0, 0.0); 
-   
-    Coord centre(10, 10); 
-   
+TEST_CASE("Jeu::voisinsEspece()")
+{
+    Jeu j(0.0, 0.0);
+
+    Coord centre(10, 10);
+
     j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));  
+    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));
     j.ajouteAnimal(Espece::Lapin, Coord(11, 10));
-    j.ajouteAnimal(Espece::Renard, Coord(10, 9)); 
+    j.ajouteAnimal(Espece::Renard, Coord(10, 9));
 
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
     Ensemble voisinsRenards = j.voisinsEspece(centre, Espece::Renard);
 
     CHECK(voisinsLapins.cardinal() == 2);
     CHECK(voisinsRenards.cardinal() == 1);
+    j.voisinsEspece(Coord(0, 0), Renard);
 }
 
-void Jeu::deplacerAnimal(Animal &a){
+void Jeu::deplacerAnimal(Animal &a)
+{
     Coord anciennepos = a.getCoord();
     Ensemble caseslibres = voisinsVides(anciennepos);
 
-    if(!caseslibres.estVide()){
+    if (!caseslibres.estVide())
+    {
         Coord nouvellepos = caseslibres.tire();
         g.videCase(anciennepos);
         g.setCase(nouvellepos, a.getId());
         a.setCoord(nouvellepos);
     }
 }
-TEST_CASE("Jeu::deplacerAnimal()"){
+TEST_CASE("Jeu::deplacerAnimal()")
+{
     Jeu j(0.0f, 0.0f);
     int id = j.ajouteAnimal(Espece::Lapin, Coord(2, 2));
     Animal a = j.getAnimal(id);
-        
+
     CHECK(a.getCoord() == Coord(2, 2));
     CHECK(j.voisinsVides(Coord(2, 2)).cardinal() == 8);
-        
+
     j.deplacerAnimal(a);
-        
+
     Coord newPos = a.getCoord();
-    
+
     CHECK_FALSE(newPos == Coord(2, 2));
 }
 
-
 void Jeu::afficher() const
 {
-    for (int k = 0; k < TAILLEGRILLE*3+1; k++){
+    for (int k = 0; k < TAILLEGRILLE * 3 + 1; k++)
+    {
         cout << '-';
     }
     cout << endl;
@@ -190,71 +249,86 @@ void Jeu::afficher() const
         cout << "|";
         for (int j = 0; j < TAILLEGRILLE; j++)
         {
-            if (!g.caseVide(Coord(i,j))) {
-                Espece e = p.get(g.getCase(Coord(i,j))).getEspece();
-                if (e == Espece::Lapin) cout << "L";
-                else cout << "R";
+            if (!g.caseVide(Coord(i, j)))
+            {
+                Espece e = p.get(g.getCase(Coord(i, j))).getEspece();
+                if (e == Espece::Lapin)
+                    cout << "L";
+                else
+                    cout << "R";
             }
-            else cout << " ";
+            else
+                cout << " ";
             cout << setw(2) << "|";
         }
         cout << endl;
-        for (int k = 0; k < TAILLEGRILLE*3+1; k++){
+        for (int k = 0; k < TAILLEGRILLE * 3 + 1; k++)
+        {
             cout << '-';
         }
         cout << endl;
     }
 }
 
-TEST_CASE("Test visuel affichage") {
+TEST_CASE("Test visuel affichage")
+{
     Jeu j(0.4, 0.1);
     j.afficher();
 }
 
-void Jeu::testCoherence() const {
+void Jeu::testCoherence() const
+{
     Ensemble ids = p.getIds();
-    for (auto id : ids) {
+    for (auto id : ids)
+    {
         if (p.get(id).getId() != id)
-            throw runtime_error ("Incohérence d'identifiant dans la population. Identifiant stocké par la population : "
-            + to_string(id) + ". Identifiant stocké par l'animal : " + to_string(p.get(id).getId()));
+            throw runtime_error("Incohérence d'identifiant dans la population. Identifiant stocké par la population : " + to_string(id) + ". Identifiant stocké par l'animal : " + to_string(p.get(id).getId()));
     }
     verifieGrille();
 }
 
-
 // Méthodes touchant au fonctionnement du jeu
 
-void Jeu::etape() {
+void Jeu::etape()
+{
     Ensemble ids = p.getIds();
-    //Comportement Lapins
-    for (auto id: ids) {
+    // Comportement Lapins
+    for (auto id : ids)
+    {
         Animal a = p.get(id);
         int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
         Coord c_initial;
-        if (a.getEspece() == Espece::Lapin) {
+        if (a.getEspece() == Espece::Lapin)
+        {
             deplacerAnimal(a);
-            //Reproduction de lapins
-            if (voisinsvides_initial >= MinFreeBirthLapin) {
-                if (rand() % 100 < ProbReproLapin * 100) {
+            // Reproduction de lapins
+            if (voisinsvides_initial >= MinFreeBirthLapin)
+            {
+                if (rand() % 100 < ProbReproLapin * 100)
+                {
                     ajouteAnimal(Lapin, c_initial);
                 }
             }
         }
     }
-    //Comportement Renards
-    for (auto id: ids) {
+    // Comportement Renards
+    for (auto id : ids)
+    {
         Animal a = p.get(id);
         int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
         Coord c_initial;
-        //Mort de faim
+        // Mort de faim
         a.setEnergie(a.getEnergie() - 1);
-        if (a.getEnergie() <= 0) {
+        if (a.getEnergie() <= 0)
+        {
             mortAnimal(a);
         }
         Ensemble voisinslapins_initial = voisinsEspece(c_initial, Lapin);
-        //Chasse aux lapins
-        if (voisinslapins_initial.cardinal() > 0) {
-            if(!voisinslapins_initial.estVide()){
+        // Chasse aux lapins
+        if (voisinslapins_initial.cardinal() > 0)
+        {
+            if (!voisinslapins_initial.estVide())
+            {
                 Coord nouvellepos = voisinslapins_initial.tire();
                 g.videCase(c_initial);
                 mortAnimal(p.get(g.getCase(nouvellepos)));
@@ -263,12 +337,33 @@ void Jeu::etape() {
                 a.setEnergie(a.getEnergie() + FoodLapin);
             }
         }
-        else deplacerAnimal(a);
-        //Reproduction
-        if (a.getEnergie() >= FoodReprod) {
-            if (rand() % 100 < ProbBirthRenard * 100) {
+        else
+            deplacerAnimal(a);
+        // Reproduction
+        if (a.getEnergie() >= FoodReprod)
+        {
+            if (rand() % 100 < ProbBirthRenard * 100)
+            {
                 ajouteAnimal(Renard, c_initial);
             }
         }
     }
+    testCoherence();
+}
+
+bool Jeu::cycleFini() const
+{
+    bool AbsenceRenard = true;
+    for (auto id : p.getIds())
+    {
+        if (p.get(id).getEspece() == Renard)
+            AbsenceRenard = false;
+    }
+    bool AbsenceLapin = true;
+    for (auto id : p.getIds())
+    {
+        if (p.get(id).getEspece() == Lapin)
+            AbsenceLapin = false;
+    }
+    return (AbsenceLapin || AbsenceRenard);
 }

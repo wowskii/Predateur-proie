@@ -27,6 +27,7 @@ class Jeu {
     static const int FoodReprod;
     static const int MaxFood;
     static const float ProbBirthRenard;
+
     public:
     Animal getAnimal(int id);
     Jeu(float probLapins, float probRenard);
@@ -40,6 +41,7 @@ class Jeu {
     void testCoherence() const;
 
     void etape();
+    bool cycleFini() const;
 };
 
 

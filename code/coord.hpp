@@ -8,7 +8,7 @@
 #include <ctime>
 
 #ifndef TAILLEGRILLE
-#define TAILLEGRILLE 20 
+#define TAILLEGRILLE 20
 #endif
 
 using namespace std;
