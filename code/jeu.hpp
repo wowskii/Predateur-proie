@@ -28,6 +28,7 @@ class Jeu {
     Ensemble voisinsVides(Coord c) const;
     Ensemble voisinsEspece(Coord c, Espece e) const;
     void deplacerAnimal(Animal &a);
+    void testCoherence() const;
 };
 
 

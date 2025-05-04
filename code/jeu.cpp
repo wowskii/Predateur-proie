@@ -182,3 +182,13 @@ TEST_CASE("Test visuel affichage") {
     Jeu j(0.4, 0.1);
     j.afficher();
 }
+
+void Jeu::testCoherence() const {
+    Ensemble ids = p.getIds();
+    for (auto id : ids) {
+        if (p.get(id).getId() != id)
+            throw runtime_error ("Incohérence d'identifiant dans la population. Identifiant stocké par la population : "
+            + to_string(id) + ". Identifiant stocké par l'animal : " + to_string(p.get(id).getId()));
+    }
+    verifieGrille();
+}
