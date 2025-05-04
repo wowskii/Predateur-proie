@@ -42,11 +42,13 @@ TEST_CASE("Test visuel Constructeur Jeu")
     Jeu j(0.4, 0.1);
 }
 
-Grille Jeu::getGrille() {
+Grille Jeu::getGrille()
+{
     return g;
 }
 
-Population Jeu::getPopulation() {
+Population Jeu::getPopulation()
+{
     return p;
 }
 
@@ -55,15 +57,19 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
     Animal a(-1, e, c, true, FoodInit);
     int id = p.set(a);
     g.setCase(c, id);
+    cout << "adding animal id: " << id << " at " << c << " " << g.getCase(c) << endl;
+    // adding is all normal
+    // cout << g << endl;
     return id;
 }
 
-int Jeu::mortAnimal(Animal a)
+int Jeu::mortAnimal(int id)
 {
-    std::cout << "Removing Animal ID: " << a.getId() << " aka " << g.getCase(a.getCoord()) << " from Coord: (" << a.getCoord().getLig() << ", " << a.getCoord().getCol() << ")" << std::endl;
-    g.videCase(a.getCoord());
-    p.supprime(a.getId());
-    return a.getId();
+    std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
+    Coord c = p.get(id).getCoord();
+    g.videCase(c);
+    p.supprime(id);
+    return id;
 }
 TEST_CASE("Jeu::mortAnimal()")
 {
@@ -74,8 +80,7 @@ TEST_CASE("Jeu::mortAnimal()")
     int id = j.ajouteAnimal(Espece::Lapin, c);
     CHECK(j.getAnimal(id).getCoord() == c);
 
-    Animal a = j.getAnimal(id);
-    j.mortAnimal(a);
+    j.mortAnimal(id);
 
     CHECK(j.voisinsVides(voisin).cardinal() == 8);
 }
@@ -89,7 +94,7 @@ void Jeu::verifieGrille() const
 
         if (g.getCase(coord) != id)
         {
-            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + ") id grille : " + to_string(g.getCase(coord)) + ". Bonne position : (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
+            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + ") id grille : " + to_string(g.getCase(coord)) + ". position d'apres Population: (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
         }
     }
 }
@@ -184,7 +189,7 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const
     {
         for (int j = jmin; j <= jmax; j++)
         {
-            Coord voisin = Coord(i,j);
+            Coord voisin = Coord(i, j);
             if ((i != c.getLig() || j != c.getCol()) && !g.caseVide(voisin))
             {
                 int id = g.getCase(voisin);
@@ -228,6 +233,8 @@ void Jeu::deplacerAnimal(Animal &a)
         g.videCase(anciennepos);
         g.setCase(nouvellepos, a.getId());
         a.setCoord(nouvellepos);
+        std::cout << "Animal ID: " << a.getId() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
+                  << ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
     }
 }
 TEST_CASE("Jeu::deplacerAnimal()")
@@ -302,9 +309,12 @@ void Jeu::testCoherence() const
 void Jeu::etape()
 {
     // Comportement Lapins
+    int compteur = 0;
     for (auto id : p.getIds())
     {
         Animal a = p.get(id);
+        cout << id << " " << compteur << " " << p.getIds().cardinal() << endl;
+        compteur++;
         int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
         Coord c_initial;
         if (a.getEspece() == Espece::Lapin)
@@ -330,7 +340,7 @@ void Jeu::etape()
         a.setEnergie(a.getEnergie() - 1);
         if (a.getEnergie() == 0)
         {
-            mortAnimal(a);
+            mortAnimal(id);
         }
         Ensemble voisinslapins_initial = voisinsEspece(c_initial, Lapin);
         // Chasse aux lapins
@@ -340,8 +350,8 @@ void Jeu::etape()
             {
                 Coord nouvellepos = voisinslapins_initial.tire();
                 g.videCase(c_initial);
-                mortAnimal(p.get(g.getCase(nouvellepos)));
-                g.setCase(nouvellepos, a.getId());
+                mortAnimal(g.getCase(nouvellepos));
+                g.setCase(nouvellepos, id);
                 a.setCoord(nouvellepos);
                 a.setEnergie(a.getEnergie() + FoodLapin);
             }
@@ -357,7 +367,7 @@ void Jeu::etape()
             }
         }
     }
-    //testCoherence();
+    testCoherence();
 }
 
 bool Jeu::cycleFini() const

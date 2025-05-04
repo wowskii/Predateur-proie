@@ -9,14 +9,15 @@
 #include <stdexcept>
 #include <sstream>
 #include <unordered_map>
+#include <set>
 
 using namespace std;
 
 class Population {
     private:
         std::unordered_map<int, Animal> map;
-        int nextId = 0;
-    
+        unsigned int nextId = 0;
+        std::set<int> freedIds;
     public:
     Population() : map() {}
     

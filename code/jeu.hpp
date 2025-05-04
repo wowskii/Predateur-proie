@@ -34,7 +34,7 @@ class Jeu {
     Population getPopulation();
     Jeu(float probLapins, float probRenard);
     int ajouteAnimal(Espece e, Coord c);
-    int mortAnimal(Animal a);
+    int mortAnimal(int id);
     void afficher() const;
     void verifieGrille() const;
     Ensemble voisinsVides(Coord c) const;

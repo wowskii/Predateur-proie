@@ -249,7 +249,7 @@ TEST_CASE("Affichage d'ensemble")
     CHECK(oss3.str() == "{(0,4), (0,15), (0,10)}");
 }
 
-Ensemble::Ensemble() : t(MAXCARD, 0), card(0) {};
+Ensemble::Ensemble() : t(0, 0), card(0) {};
 
 bool Ensemble::estVide()
 {
@@ -289,7 +289,8 @@ void Ensemble::ajoute(int a)
     {
         throw runtime_error("Ajout impossible, MAXCARD dépassé");
     }
-    t[card] = a;
+    // t[card] = a;
+    t.push_back(a);
     card++;
 }
 TEST_CASE("Fonction ajoute")
@@ -316,6 +317,7 @@ int Ensemble::tire()
     int randnum = t[index];
 
     t[index] = t[card - 1];
+    t.pop_back();
     card--;
 
     return randnum;
