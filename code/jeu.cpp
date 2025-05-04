@@ -39,7 +39,7 @@ Jeu::Jeu(float probLapins, float probRenard)
 
 TEST_CASE("Test visuel Constructeur Jeu")
 {
-    Jeu j(0.4, 0.1);
+    Jeu j(0.2, 0.01);
 }
 
 Grille Jeu::getGrille()
@@ -57,15 +57,15 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
     Animal a(-1, e, c, true, FoodInit);
     int id = p.set(a);
     g.setCase(c, id);
-    cout << "adding animal id: " << id << " at " << c << " " << g.getCase(c) << endl;
-    // adding is all normal
-    // cout << g << endl;
+    // cout << "adding animal id: " << id << " at " << c << " " << g.getCase(c) << endl;
+    //  adding is all normal
+    //  cout << g << endl;
     return id;
 }
 
 int Jeu::mortAnimal(int id)
 {
-    std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
+    // std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
     Coord c = p.get(id).getCoord();
     g.videCase(c);
     p.supprime(id);
@@ -233,8 +233,8 @@ void Jeu::deplacerAnimal(Animal &a)
         g.videCase(anciennepos);
         g.setCase(nouvellepos, a.getId());
         a.setCoord(nouvellepos);
-        std::cout << "Animal ID: " << a.getId() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
-                  << ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
+        // std::cout << "Animal ID: " << a.getId() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
+        //<< ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
     }
 }
 TEST_CASE("Jeu::deplacerAnimal()")
@@ -310,15 +310,17 @@ void Jeu::etape()
 {
     // Comportement Lapins
     int compteur = 0;
-    for (auto id : p.getIds())
+    Ensemble ids = p.getIds();
+    for (auto id : ids)
     {
         Animal a = p.get(id);
-        cout << id << " " << compteur << " " << p.getIds().cardinal() << endl;
+        //cout << id << " " << compteur << " " << p.getIds().cardinal() << endl;
         compteur++;
-        int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
-        Coord c_initial;
+
         if (a.getEspece() == Espece::Lapin)
         {
+            int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
+            Coord c_initial = a.getCoord();
             deplacerAnimal(a);
             // Reproduction de lapins
             if (voisinsvides_initial >= MinFreeBirthLapin)
@@ -326,48 +328,54 @@ void Jeu::etape()
                 if (rand() % 100 < ProbReproLapin * 100)
                 {
                     ajouteAnimal(Lapin, c_initial);
+                    //cout << "Naissance Lapin" << endl;
                 }
             }
         }
     }
     // Comportement Renards
-    for (auto id : p.getIds())
+    // ids = p.getIds();
+    for (auto id : ids)
     {
         Animal a = p.get(id);
-        int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
-        Coord c_initial;
-        // Mort de faim
-        a.setEnergie(a.getEnergie() - 1);
-        if (a.getEnergie() == 0)
+        if (a.getEspece() == Renard)
         {
-            mortAnimal(id);
-        }
-        Ensemble voisinslapins_initial = voisinsEspece(c_initial, Lapin);
-        // Chasse aux lapins
-        if (voisinslapins_initial.cardinal() > 0)
-        {
-            if (!voisinslapins_initial.estVide())
+            int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
+            Coord c_initial = a.getCoord();
+            // Mort de faim
+            a.setEnergie(max(0, a.getEnergie() - 1));
+            if (a.getEnergie() == 0)
             {
-                Coord nouvellepos = voisinslapins_initial.tire();
-                g.videCase(c_initial);
-                mortAnimal(g.getCase(nouvellepos));
-                g.setCase(nouvellepos, id);
-                a.setCoord(nouvellepos);
-                a.setEnergie(a.getEnergie() + FoodLapin);
+                mortAnimal(id);
+                continue;
             }
-        }
-        else
-            deplacerAnimal(a);
-        // Reproduction
-        if (a.getEnergie() >= FoodReprod)
-        {
-            if (rand() % 100 < ProbBirthRenard * 100)
+            Ensemble voisinslapins_initial = voisinsEspece(c_initial, Lapin);
+            // Chasse aux lapins
+            if (voisinslapins_initial.cardinal() > 0)
             {
-                ajouteAnimal(Renard, c_initial);
+                if (!voisinslapins_initial.estVide())
+                {
+                    Coord nouvellepos = voisinslapins_initial.tire();
+                    g.videCase(c_initial);
+                    mortAnimal(g.getCase(nouvellepos));
+                    g.setCase(nouvellepos, id);
+                    a.setCoord(nouvellepos);
+                    a.setEnergie(max(a.getEnergie() + FoodLapin, MaxFood));
+                }
+            }
+            else
+                deplacerAnimal(a);
+            // Reproduction
+            if (a.getEnergie() >= FoodReprod)
+            {
+                if (rand() % 100 < ProbBirthRenard * 100)
+                {
+                    ajouteAnimal(Renard, c_initial);
+                }
             }
         }
     }
-    //testCoherence();
+    // testCoherence();
 }
 
 bool Jeu::cycleFini() const

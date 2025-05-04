@@ -8,7 +8,7 @@ using namespace sf;
 int main () {
     srand(static_cast<unsigned int>(time(0)));
 
-    Jeu j(0.2,0.1);
+    Jeu j(0.4,0.01);
 
     RenderWindow w(VideoMode(850, 850), "Simulation");
 
@@ -18,7 +18,8 @@ int main () {
     while(!(j.cycleFini())){
         SFMLdessine(j.getGrille(), j.getPopulation(), w);
         j.etape();
-        system("clear");
+        //system("clear");
+        this_thread::sleep_for(chrono::seconds(1));
     }
 
 }

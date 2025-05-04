@@ -6,7 +6,7 @@ Animal Population::get(int id) const
     auto iter = map.find(id);
     if (iter != map.end())
     {
-        cout << id << " " << iter->second.getCoord() << endl;
+        //cout << id << " " << iter->second.getCoord() << endl;
         //cout << iter->first << id << iter->second.getId() << endl;
         return iter->second;
     }
@@ -45,14 +45,13 @@ int Population::reserve() {
     if (!freedIds.empty()) {
         int id = *freedIds.begin();
         freedIds.erase(freedIds.begin());
-        map[id] = Animal();
+        std::cout << "Recycled ID: " << id << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << std::endl;
         return id;
     }
     while (map.find(nextId) != map.end()) {
         nextId++;
     }
-    map[nextId] = Animal();
-    std::cout << "nextId: " << nextId << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << std::endl;
+    std::cout << "New ID: " << nextId << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << std::endl;
     return nextId++;
 }
 
@@ -78,6 +77,7 @@ TEST_CASE("get, set et reserve")
 void Population::supprime(int id) {
     map.erase(id);
     freedIds.insert(id);
+
 }
 
 TEST_CASE("supprime")
