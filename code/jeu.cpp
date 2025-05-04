@@ -148,17 +148,6 @@ TEST_CASE("Jeu::deplacerAnimal()"){
     CHECK_FALSE(newPos == Coord(2, 2));
 }
 
-void Jeu::deplacerAnimal(Animal &a){
-    Coord anciennepos = a.getCoord();
-    Ensemble caseslibres = voisinsVides(anciennepos);
-
-    if(!caseslibres.estVide()){
-        Coord nouvellepos = caseslibres.tire();
-        g.videCase(anciennepos);
-        g.setCase(nouvellepos, a.getId());
-        a.setCoord(nouvellepos);
-    }
-}
 
 void Jeu::afficher() const
 {
