@@ -23,7 +23,7 @@ class Population {
     Animal get(int id) const;
     Ensemble getIds() const;
     int reserve();
-    int set(Animal animal);
+    int set(Animal& animal);
     void supprime(int id);
 };
 

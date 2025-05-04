@@ -9,8 +9,8 @@ int main () {
     Jeu j(0.4,0.1);
 
     while(!(j.cycleFini())){
-        j.etape();
         j.afficher();
+        j.etape();
         system("clear");
     }
 

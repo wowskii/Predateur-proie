@@ -39,9 +39,12 @@ TEST_CASE("Test general grille") {
     Grille g;
     Population p;
 
+    Animal a1(-1, Lapin, Coord(2,5));
+    Animal a2(-1, Lapin, Coord(5,5));
+
     //TEST setCase
-    int test1 = g.setCase(Coord(2,5), p.set(Animal(-1, Lapin, Coord(2,5))));
-    int test2 = g.setCase(Coord(5,5), p.set(Animal(-1, Lapin, Coord(5,5))));
+    int test1 = g.setCase(Coord(2,5), p.set(a1));
+    int test2 = g.setCase(Coord(5,5), p.set(a2));
     //TEST getCase
     CHECK(g.getCase(Coord(2,5)) == test1);
     CHECK(g.getCase(Coord(5,5)) == test2);

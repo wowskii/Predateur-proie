@@ -1,7 +1,6 @@
 #include "population.hpp"
 #include "doctest.h"
 
-
 Animal Population::get(int id) const
 {
     auto iter = map.find(id);
@@ -22,16 +21,20 @@ Ensemble Population::getIds() const
     return e;
 }
 
-TEST_CASE("getIds") {
+TEST_CASE("getIds")
+{
     Population p;
+    Animal a1(-1, Lapin, Coord(5, 15));
+    Animal a2(-1, Renard, Coord(5, 17));
+    Animal a3(-1, Lapin, Coord(2, 15));
 
-    p.set(Animal(-1, Lapin, Coord(5,15)));
+    p.set(a1);
 
-    p.set(Animal(-1, Renard, Coord(5,15)));
+    p.set(a2);
 
-    p.set(Animal(-1, Lapin, Coord(5,15)));
+    p.set(a3);
     CHECK(p.getIds().cardinal() == 3);
-    //cout << p.getIds() << endl;
+    // cout << p.getIds() << endl;
 }
 
 int Population::reserve()
@@ -40,32 +43,27 @@ int Population::reserve()
     {
         nextId++;
     }
-    map[nextId] = Animal();
+    //map[nextId] = Animal();
     return nextId++;
 }
 
-int Population::set(Animal animal)
+int Population::set(Animal &animal)
 {
     int id = reserve();
-    if (map.find(id) != map.end())
-    {
-        animal.setId(id);
-        map[id] = animal;
-        return id;
-    }
-    else
-    {
-        throw std::invalid_argument("ID not reserved");
-    }
+    animal.setId(id);
+    map[id] = animal;
+    return id;
 }
 
-TEST_CASE("get, set et reserve") {
+TEST_CASE("get, set et reserve")
+{
     Population p;
-    int id = p.set(Animal(-1, Renard, Coord(2,4)));
+    Animal a(-1, Renard, Coord(2, 4));
+    int id = p.set(a);
 
     CHECK(p.get(id).getId() == id);
     CHECK(p.get(id).getEspece() == Espece::Renard);
-    CHECK(p.get(id).getCoord() == Coord(2,4));
+    CHECK(p.get(id).getCoord() == Coord(2, 4));
 }
 
 void Population::supprime(int id)
@@ -73,11 +71,14 @@ void Population::supprime(int id)
     map.erase(id);
 }
 
-TEST_CASE("supprime") {
+TEST_CASE("supprime")
+{
     Population p;
-    p.set(Animal(-1, Lapin, Coord(5,15)));
-    p.set(Animal(-1, Renard, Coord(5,15)));
-    int idASupprimer = p.set(Animal(-1, Lapin, Coord(5,15)));
+    Animal a1(-1, Lapin, Coord(5, 15));
+    Animal a2(-1, Renard, Coord(5, 15));
+    p.set(a1);
+    p.set(a2);
+    int idASupprimer = a1.getId();
     p.supprime(idASupprimer);
-    CHECK(p.getIds().cardinal() == 2);
+    CHECK(p.getIds().cardinal() == 1);
 }

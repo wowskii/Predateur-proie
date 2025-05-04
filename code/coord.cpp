@@ -287,7 +287,7 @@ void Ensemble::ajoute(int a)
 {
     if (card >= MAXCARD)
     {
-        throw runtime_error("Ajout impossible");
+        throw runtime_error("Ajout impossible, MAXCARD dépassé");
     }
     t[card] = a;
     card++;

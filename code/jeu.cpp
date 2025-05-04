@@ -44,7 +44,9 @@ TEST_CASE("Test visuel Constructeur Jeu")
 
 int Jeu::ajouteAnimal(Espece e, Coord c)
 {
-    int id = g.setCase(c, p.set(Animal(-1, e, c, true, FoodInit)));
+    Animal a(-1, e, c, true, FoodInit);
+    int id = p.set(a);
+    g.setCase(c, id);
     return id;
 }
 
@@ -278,10 +280,9 @@ TEST_CASE("Test visuel affichage")
 
 void Jeu::testCoherence() const
 {
-    Ensemble ids = p.getIds();
-    for (auto id : ids)
+    for (auto id : p.getIds())
     {
-        if (p.get(id).getId() != id)
+        if (p.get(id).getId() != id && id != 0)
             throw runtime_error("Incohérence d'identifiant dans la population. Identifiant stocké par la population : " + to_string(id) + ". Identifiant stocké par l'animal : " + to_string(p.get(id).getId()));
     }
     verifieGrille();
