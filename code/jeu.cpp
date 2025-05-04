@@ -103,7 +103,6 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
     return res;
 }
 TEST_CASE("Jeu::voisinsEspece()"){
-    
     Jeu j(0.0, 0.0); 
    
     Coord centre(10, 10); 
@@ -114,8 +113,22 @@ TEST_CASE("Jeu::voisinsEspece()"){
     j.ajouteAnimal(Espece::Renard, Coord(10, 9)); 
 
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
-    
+    Ensemble voisinsRenards = j.voisinsEspece(centre, Espece::Renard);
+
     CHECK(voisinsLapins.cardinal() == 2);
+    CHECK(voisinsRenards.cardinal() == 1);
+}
+
+void Jeu::deplacerAnimal(Animal &a){
+    Coord anciennepos = a.getCoord();
+    Ensemble caseslibres = voisinsVides(anciennepos);
+
+    if(!caseslibres.estVide()){
+        Coord nouvellepos = caseslibres.tire();
+        g.videCase(anciennepos);
+        g.setCase(nouvellepos, a.getId());
+        a.setCoord(nouvellepos);
+    }
 }
 
 void Jeu::afficher() const

@@ -29,7 +29,7 @@ class Animal{
         int getId() const;
         void setId(int newid);
         Coord getCoord() const;
-        void setCoord(int x, int y);
+        void setCoord(Coord c);
         void setEspece(Espece e);
         Espece getEspece() const;
         void affiche();
