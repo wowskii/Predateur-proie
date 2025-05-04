@@ -30,6 +30,8 @@ class Jeu {
 
     public:
     Animal getAnimal(int id);
+    Grille getGrille();
+    Population getPopulation();
     Jeu(float probLapins, float probRenard);
     int ajouteAnimal(Espece e, Coord c);
     int mortAnimal(Animal a);

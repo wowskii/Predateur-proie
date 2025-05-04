@@ -42,6 +42,14 @@ TEST_CASE("Test visuel Constructeur Jeu")
     Jeu j(0.4, 0.1);
 }
 
+Grille Jeu::getGrille() {
+    return g;
+}
+
+Population Jeu::getPopulation() {
+    return p;
+}
+
 int Jeu::ajouteAnimal(Espece e, Coord c)
 {
     Animal a(-1, e, c, true, FoodInit);
