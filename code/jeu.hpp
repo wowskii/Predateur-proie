@@ -19,11 +19,13 @@ class Jeu {
     Population p;
 
     public:
+    Animal getAnimal(int id);
     Jeu(float probLapins, float probRenard);
     int ajouteAnimal(Espece e, Coord c);
     void verifieGrille() const;
     Ensemble voisinsVides(Coord c) const;
     Ensemble voisinsEspece(Coord c, Espece e) const;
+    void deplacerAnimal(Animal &a);
 };
 
 

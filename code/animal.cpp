@@ -30,21 +30,25 @@ TEST_CASE("Constructeur par defaut"){
     CHECK(a.getEspece() == Lapin);
 }
 
-void Animal::setCoord(int x, int y){
-    coord = Coord(x, y);
+void Animal::setCoord(Coord c){
+    coord = c;
 }
 TEST_CASE("Animal setCoord()"){
     Animal a;
-    Coord defaut = a.getCoord();
-    CHECK(defaut == Coord(0, 0));
+    Coord defaultCoord = a.getCoord();
+    CHECK(defaultCoord == Coord(0, 0));
 
-    a.setCoord(3, 5);
-    Coord newCoord = a.getCoord();
-    CHECK(newCoord == Coord(3, 5));
-
-    a.setCoord(10, 10);
-    Coord newCoord1 = a.getCoord();
-    CHECK(newCoord1 == Coord(10, 10));
+    SUBCASE("Test avec Coord valide") {
+        Coord testCoord(3, 5);
+        a.setCoord(testCoord);
+        CHECK(a.getCoord() == testCoord);
+        CHECK(a.getCoord().getLig() == 3);
+        CHECK(a.getCoord().getCol() == 5);
+    }
+    SUBCASE("Test avec Coord invalide") {
+        CHECK_THROWS_AS(Coord(-1, -1), std::invalid_argument);
+        CHECK_THROWS_AS(Coord(TAILLEGRILLE, TAILLEGRILLE), std::invalid_argument);
+    }
 }
 
 void Animal::setEspece(Espece e){

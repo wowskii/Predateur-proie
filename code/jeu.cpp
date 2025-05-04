@@ -1,6 +1,9 @@
 #include "jeu.hpp"
 #include "doctest.h"
 
+Animal Jeu::getAnimal(int id) {
+    return p.get(id);  // Maintenant valide car p.get() retourne une référence valide
+}
 
 Jeu::Jeu(float probLapins, float probRenard) {
     if (probLapins < 0 || probLapins > 1 || 
@@ -98,7 +101,6 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
     return res;
 }
 TEST_CASE("Jeu::voisinsEspece()"){
-    
     Jeu j(0.0, 0.0); 
    
     Coord centre(10, 10); 
@@ -109,6 +111,34 @@ TEST_CASE("Jeu::voisinsEspece()"){
     j.ajouteAnimal(Espece::Renard, Coord(10, 9)); 
 
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
-    
+    Ensemble voisinsRenards = j.voisinsEspece(centre, Espece::Renard);
+
     CHECK(voisinsLapins.cardinal() == 2);
+    CHECK(voisinsRenards.cardinal() == 1);
+}
+
+void Jeu::deplacerAnimal(Animal &a){
+    Coord anciennepos = a.getCoord();
+    Ensemble caseslibres = voisinsVides(anciennepos);
+
+    if(!caseslibres.estVide()){
+        Coord nouvellepos = caseslibres.tire();
+        g.videCase(anciennepos);
+        g.setCase(nouvellepos, a.getId());
+        a.setCoord(nouvellepos);
+    }
+}
+TEST_CASE("Jeu::deplacerAnimal()"){
+    Jeu j(0.0f, 0.0f);
+    int id = j.ajouteAnimal(Espece::Lapin, Coord(2, 2));
+    Animal a = j.getAnimal(id);
+        
+    CHECK(a.getCoord() == Coord(2, 2));
+    CHECK(j.voisinsVides(Coord(2, 2)).cardinal() == 8);
+        
+    j.deplacerAnimal(a);
+        
+    Coord newPos = a.getCoord();
+    
+    CHECK_FALSE(newPos == Coord(2, 2));
 }
