@@ -260,7 +260,7 @@ void Jeu::etape() {
                 mortAnimal(p.get(g.getCase(nouvellepos)));
                 g.setCase(nouvellepos, a.getId());
                 a.setCoord(nouvellepos);
-                a.setEnergie(a.getEnergie() + FoodLapin)
+                a.setEnergie(a.getEnergie() + FoodLapin);
             }
         }
         else deplacerAnimal(a);
