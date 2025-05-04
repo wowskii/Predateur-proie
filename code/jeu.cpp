@@ -83,9 +83,7 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
 
             Coord voisin(x + dx, y + dy);
             
-            if (voisin.getLig() >= 0 && voisin.getLig() < TAILLEGRILLE &&
-                voisin.getCol() >= 0 && voisin.getCol() < TAILLEGRILLE) {
-                
+            if (voisin.getLig() >= 0 && voisin.getLig() < TAILLEGRILLE && voisin.getCol() >= 0 && voisin.getCol() < TAILLEGRILLE) {
                 if (!g.caseVide(voisin)) {
                     int id = g.getCase(voisin);
                     const Animal& animal = p.get(id);
