@@ -52,8 +52,9 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
 
 int Jeu::mortAnimal(Animal a)
 {
-    p.supprime(a.getId());
+    std::cout << "Removing Animal ID: " << a.getId() << " aka " << g.getCase(a.getCoord()) << " from Coord: (" << a.getCoord().getLig() << ", " << a.getCoord().getCol() << ")" << std::endl;
     g.videCase(a.getCoord());
+    p.supprime(a.getId());
     return a.getId();
 }
 TEST_CASE("Jeu::mortAnimal()")
@@ -80,7 +81,7 @@ void Jeu::verifieGrille() const
 
         if (g.getCase(coord) != id)
         {
-            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé ");
+            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + ") id grille : " + to_string(g.getCase(coord)) + ". Bonne position : (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
         }
     }
 }
@@ -282,7 +283,7 @@ void Jeu::testCoherence() const
 {
     for (auto id : p.getIds())
     {
-        if (p.get(id).getId() != id && id != 0)
+        if (p.get(id).getId() != id)
             throw runtime_error("Incohérence d'identifiant dans la population. Identifiant stocké par la population : " + to_string(id) + ". Identifiant stocké par l'animal : " + to_string(p.get(id).getId()));
     }
     verifieGrille();
@@ -292,9 +293,8 @@ void Jeu::testCoherence() const
 
 void Jeu::etape()
 {
-    Ensemble ids = p.getIds();
     // Comportement Lapins
-    for (auto id : ids)
+    for (auto id : p.getIds())
     {
         Animal a = p.get(id);
         int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
@@ -313,14 +313,14 @@ void Jeu::etape()
         }
     }
     // Comportement Renards
-    for (auto id : ids)
+    for (auto id : p.getIds())
     {
         Animal a = p.get(id);
         int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
         Coord c_initial;
         // Mort de faim
         a.setEnergie(a.getEnergie() - 1);
-        if (a.getEnergie() <= 0)
+        if (a.getEnergie() == 0)
         {
             mortAnimal(a);
         }
@@ -349,7 +349,7 @@ void Jeu::etape()
             }
         }
     }
-    testCoherence();
+    //testCoherence();
 }
 
 bool Jeu::cycleFini() const

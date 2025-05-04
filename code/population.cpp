@@ -16,6 +16,7 @@ Ensemble Population::getIds() const
     Ensemble e;
     for (const auto &pair : map)
     {
+        //std::cout << "ID in map: " << pair.first << std::endl;
         e.ajoute(pair.first);
     }
     return e;
@@ -68,6 +69,7 @@ TEST_CASE("get, set et reserve")
 
 void Population::supprime(int id)
 {
+    //std::cout << "Erasing ID: " << id << std::endl;
     map.erase(id);
 }
 
