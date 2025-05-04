@@ -1,6 +1,15 @@
 #include "jeu.hpp"
 #include "doctest.h"
 
+const int Jeu::MinFreeBirthLapin = 4;
+const float Jeu::ProbReproLapin = 0.3f;
+
+const int Jeu::FoodInit = 5;
+const int Jeu::FoodLapin = 5;
+const int Jeu::FoodReprod = 8;
+const int Jeu::MaxFood = 10;
+const float Jeu::ProbBirthRenard = 0.05f;
+
 Animal Jeu::getAnimal(int id) {
     return p.get(id);  // Maintenant valide car p.get() retourne une référence valide
 }
@@ -35,8 +44,27 @@ TEST_CASE("Test visuel Constructeur Jeu")
 
 int Jeu::ajouteAnimal(Espece e, Coord c)
 {
-    int id = g.setCase(c, p.set(Animal(-1, e, c)));
+    int id = g.setCase(c, p.set(Animal(-1, e, c, true, FoodInit)));
     return id;
+}
+
+int Jeu::mortAnimal(Animal a) {
+    p.supprime(a.getId());
+    g.videCase(a.getCoord());
+    return a.getId();
+}
+TEST_CASE("Jeu::mortAnimal()") {
+    Jeu j(0.0, 0.0);
+    Coord c(5, 5);
+    Coord voisin(5,6);
+
+    int id = j.ajouteAnimal(Espece::Lapin, c);
+    CHECK(j.getAnimal(id).getCoord() == c);
+
+    Animal a = j.getAnimal(id);
+    j.mortAnimal(a);
+
+    CHECK(j.voisinsVides(voisin).cardinal() == 8);
 }
 
 void Jeu::verifieGrille() const {
@@ -191,4 +219,56 @@ void Jeu::testCoherence() const {
             + to_string(id) + ". Identifiant stocké par l'animal : " + to_string(p.get(id).getId()));
     }
     verifieGrille();
+}
+
+
+// Méthodes touchant au fonctionnement du jeu
+
+void Jeu::etape() {
+    Ensemble ids = p.getIds();
+    //Comportement Lapins
+    for (auto id: ids) {
+        Animal a = p.get(id);
+        int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
+        Coord c_initial;
+        if (a.getEspece() == Espece::Lapin) {
+            deplacerAnimal(a);
+            //Reproduction de lapins
+            if (voisinsvides_initial >= MinFreeBirthLapin) {
+                if (rand() % 100 < ProbReproLapin * 100) {
+                    ajouteAnimal(Lapin, c_initial);
+                }
+            }
+        }
+    }
+    //Comportement Renards
+    for (auto id: ids) {
+        Animal a = p.get(id);
+        int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
+        Coord c_initial;
+        //Mort de faim
+        a.setEnergie(a.getEnergie() - 1);
+        if (a.getEnergie() <= 0) {
+            mortAnimal(a);
+        }
+        Ensemble voisinslapins_initial = voisinsEspece(c_initial, Lapin);
+        //Chasse aux lapins
+        if (voisinslapins_initial.cardinal() > 0) {
+            if(!voisinslapins_initial.estVide()){
+                Coord nouvellepos = voisinslapins_initial.tire();
+                g.videCase(c_initial);
+                mortAnimal(p.get(g.getCase(nouvellepos)));
+                g.setCase(nouvellepos, a.getId());
+                a.setCoord(nouvellepos);
+                a.setEnergie(a.getEnergie() + FoodLapin)
+            }
+        }
+        else deplacerAnimal(a);
+        //Reproduction
+        if (a.getEnergie() >= FoodReprod) {
+            if (rand() % 100 < ProbBirthRenard * 100) {
+                ajouteAnimal(Renard, c_initial);
+            }
+        }
+    }
 }

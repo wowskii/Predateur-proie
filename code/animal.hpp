@@ -38,6 +38,7 @@ class Animal{
         void mange();
         void jeune();
         int getEnergie() const;
+        void setEnergie(int e);
         bool isVivant() const;
 };
 

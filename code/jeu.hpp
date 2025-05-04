@@ -19,16 +19,27 @@ class Jeu {
     Grille g;
     Population p;
 
+    static const int MinFreeBirthLapin;
+    static const float ProbReproLapin;
+
+    static const int FoodInit;
+    static const int FoodLapin;
+    static const int FoodReprod;
+    static const int MaxFood;
+    static const float ProbBirthRenard;
     public:
     Animal getAnimal(int id);
     Jeu(float probLapins, float probRenard);
     int ajouteAnimal(Espece e, Coord c);
+    int mortAnimal(Animal a);
     void afficher() const;
     void verifieGrille() const;
     Ensemble voisinsVides(Coord c) const;
     Ensemble voisinsEspece(Coord c, Espece e) const;
     void deplacerAnimal(Animal &a);
     void testCoherence() const;
+
+    void etape();
 };
 
 

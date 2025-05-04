@@ -111,6 +111,9 @@ TEST_CASE("Animal seReproduire()"){
 int Animal::getEnergie() const {
     return energie;
 }
+void Animal::setEnergie(int e){
+    energie = e;
+}
 
 void Animal::mange(){
     energie++;
