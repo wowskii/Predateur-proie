@@ -7,9 +7,12 @@
 #include <sstream>
 #include <ctime>
 
+#ifndef TAILLEGRILLE
+#define TAILLEGRILLE 20 
+#endif
+
 using namespace std;
 
-const int TAILLEGRILLE = 20;
 class Ensemble { 
     private :
         vector<int> t;
@@ -24,6 +27,8 @@ class Ensemble {
         friend ostream& operator<<(ostream& out, const Ensemble& e);
         void ajoute(int a);
         int tire();
+        std::vector<int>::const_iterator begin() const { return t.begin(); }
+        std::vector<int>::const_iterator end() const { return t.end(); }
 };
 class Coord
 {
@@ -33,7 +38,7 @@ private:
 
 public:
     Coord();
-    Coord(int lig, int col);
+    Coord(int l, int c);
     Coord(int n);
 
     int getLig() const;

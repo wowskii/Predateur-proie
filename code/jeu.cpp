@@ -36,6 +36,90 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
     return id;
 }
 
+void Jeu::verifieGrille() const {
+    for (int id : p.getIds()) {
+        const Animal& animal = p.get(id);
+        Coord coord = animal.getCoord();
+        
+        if (g.getCase(coord) != id) {
+            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé ");
+        }
+    }
+}
+TEST_CASE("Jeu::verifieGrille()"){
+    Jeu jeu(0.0, 0.0);
+    Coord c(2,3);
+    int test = jeu.ajouteAnimal(Lapin, c);
+    CHECK_NOTHROW(jeu.verifieGrille());
+}
+
+Ensemble Jeu::voisinsVides(Coord c) const{
+    Ensemble res;
+    int x = c.getLig();
+    int y = c.getCol();
+    for(int dx = -1; dx <= 1; dx++){
+        for(int dy = -1; dy <= 1; dy++){
+            if(dx == 0 && dy == 0) continue;
+
+            Coord voisin(x + dx, y + dy);
+            if(g.caseVide(voisin)) {
+                int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
+                res.ajoute(coord);
+            }
+        }
+    }
+    return res;
+}
+TEST_CASE("Jeu::voisinsVides()"){
+    Jeu j(0.0, 0.0); 
+    Coord c(1, 1);
+    j.ajouteAnimal(Lapin, c); 
+    Ensemble vides = j.voisinsVides(c);
+    CHECK(vides.cardinal() == 8);
+}
+
+Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
+    Ensemble res;
+    int x = c.getLig();
+    int y = c.getCol();
+    for(int dx = -1; dx <= 1; dx++){
+        for(int dy = -1; dy <= 1; dx++){
+            if(dx == 0 && dy == 0) continue;
+            
+            Coord voisin(x + dx, y + dy);
+            if((voisin.getLig() >= 0 && voisin.getLig() <= TAILLEGRILLE) && (voisin.getCol() >= 0 && voisin.getCol() <= TAILLEGRILLE)){
+                if(!g.caseVide(voisin)){
+                    int id = g.getCase(voisin);
+                    const Animal& animal = p.get(id);
+                    if(animal.getEspece() == e){
+                        int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
+                        res.ajoute(coord);
+                    }
+                }
+            }
+
+        }
+    }
+    return res;
+}
+TEST_CASE("Jeu::voisinsEspece()"){
+    
+    Jeu j(0.0, 0.0f);
+    
+    Coord centre = Coord{2, 2}; 
+    
+    j.ajouteAnimal(Espece::Renard, centre);
+    j.ajouteAnimal(Espece::Lapin, Coord{1, 2}); 
+    j.ajouteAnimal(Espece::Lapin, Coord{3, 2}); 
+    j.ajouteAnimal(Espece::Renard, Coord{2, 1}); 
+    
+   
+    Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
+    
+   
+    CHECK(voisinsLapins.cardinal() == 2); 
+}
+
 void Jeu::afficher() const
 {
     for (int k = 0; k < TAILLEGRILLE*3+1; k++){
