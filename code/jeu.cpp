@@ -101,20 +101,16 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
 }
 TEST_CASE("Jeu::voisinsEspece()"){
     
-    Jeu j(0.0f, 0.0f); // 0% lapins, 0% renards
-    
-    // 2. Position centrale valide (adaptée à TAILLEGRILLE=20)
-    Coord centre(10, 10); // Centre d'une grille 20x20
-    
-    // 3. Placement des animaux avec coordonnées valides
+    Jeu j(0.0, 0.0); 
+   
+    Coord centre(10, 10); 
+   
     j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));  // Nord
-    j.ajouteAnimal(Espece::Lapin, Coord(11, 10)); // Sud
-    j.ajouteAnimal(Espece::Renard, Coord(10, 9)); // Ouest
-    
-    // 4. Test
+    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));  
+    j.ajouteAnimal(Espece::Lapin, Coord(11, 10));
+    j.ajouteAnimal(Espece::Renard, Coord(10, 9)); 
+
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
     
-    // 5. Vérifications
     CHECK(voisinsLapins.cardinal() == 2);
 }
