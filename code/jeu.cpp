@@ -109,6 +109,8 @@ TEST_CASE("Jeu::voisinsEspece()"){
     j.ajouteAnimal(Espece::Renard, Coord(10, 9)); 
 
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
-    
+    Ensemble voisinsRenards = j.voisinsEspece(centre, Espece::Renard);
+
     CHECK(voisinsLapins.cardinal() == 2);
+    CHECK(voisinsRenards.cardinal() == 1);
 }
