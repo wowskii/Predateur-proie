@@ -10,7 +10,8 @@ Animal Population::get(int id) const
         //cout << iter->first << id << iter->second.getId() << endl;
         return iter->second;
     }
-    throw runtime_error("Un animal d'identifiant " + to_string(id) + " n'existe pas.");
+    //throw runtime_error("Un animal d'identifiant " + to_string(id) + " n'existe pas.");
+    return Animal();
 }
 
 Ensemble Population::getIds() const

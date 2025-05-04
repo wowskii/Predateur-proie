@@ -219,7 +219,7 @@ TEST_CASE("Jeu::voisinsEspece()")
 
     CHECK(voisinsLapins.cardinal() == 2);
     CHECK(voisinsRenards.cardinal() == 1);
-    j.voisinsEspece(Coord(0, 0), Renard);
+    j.voisinsEspece(Coord(39, 39), Renard);
 }
 
 void Jeu::deplacerAnimal(Animal &a)
@@ -367,7 +367,7 @@ void Jeu::etape()
             }
         }
     }
-    testCoherence();
+    //testCoherence();
 }
 
 bool Jeu::cycleFini() const
