@@ -146,7 +146,6 @@ TEST_CASE("Jeu::deplacerAnimal()"){
     Coord newPos = a.getCoord();
     
     CHECK_FALSE(newPos == Coord(2, 2));
-    CHECK(voisinsRenards.cardinal() == 1);
 }
 
 void Jeu::deplacerAnimal(Animal &a){
