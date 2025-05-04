@@ -77,40 +77,44 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
     Ensemble res;
     int x = c.getLig();
     int y = c.getCol();
-    for(int dx = -1; dx <= 1; dx++){
-        for(int dy = -1; dy <= 1; dx++){
-            if(dx == 0 && dy == 0) continue;
-            
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            if (dx == 0 && dy == 0) continue;
+
             Coord voisin(x + dx, y + dy);
-            if((voisin.getLig() >= 0 && voisin.getLig() <= TAILLEGRILLE) && (voisin.getCol() >= 0 && voisin.getCol() <= TAILLEGRILLE)){
-                if(!g.caseVide(voisin)){
+            
+            if (voisin.getLig() >= 0 && voisin.getLig() < TAILLEGRILLE &&
+                voisin.getCol() >= 0 && voisin.getCol() < TAILLEGRILLE) {
+                
+                if (!g.caseVide(voisin)) {
                     int id = g.getCase(voisin);
                     const Animal& animal = p.get(id);
-                    if(animal.getEspece() == e){
+                    if (animal.getEspece() == e) {
                         int coord = voisin.getLig() * TAILLEGRILLE + voisin.getCol();
                         res.ajoute(coord);
                     }
                 }
             }
-
         }
     }
     return res;
 }
 TEST_CASE("Jeu::voisinsEspece()"){
     
-    Jeu j(0.0, 0.0f);
+    Jeu j(0.0f, 0.0f); // 0% lapins, 0% renards
     
-    Coord centre = Coord{2, 2}; 
+    // 2. Position centrale valide (adaptée à TAILLEGRILLE=20)
+    Coord centre(10, 10); // Centre d'une grille 20x20
     
+    // 3. Placement des animaux avec coordonnées valides
     j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord{1, 2}); 
-    j.ajouteAnimal(Espece::Lapin, Coord{3, 2}); 
-    j.ajouteAnimal(Espece::Renard, Coord{2, 1}); 
+    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));  // Nord
+    j.ajouteAnimal(Espece::Lapin, Coord(11, 10)); // Sud
+    j.ajouteAnimal(Espece::Renard, Coord(10, 9)); // Ouest
     
-   
+    // 4. Test
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
     
-   
-    CHECK(voisinsLapins.cardinal() == 2); 
+    // 5. Vérifications
+    CHECK(voisinsLapins.cardinal() == 2);
 }
