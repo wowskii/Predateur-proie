@@ -10,8 +10,13 @@ Coord::Coord() {
 
 Coord::Coord(int l, int c) : lig{l}, col{c}
 {
-    if (l < 0 or c < 0 or l >= TAILLEGRILLE or c >= TAILLEGRILLE)
-        throw invalid_argument("Valeurs de coordonnées invalides");
+    if (l < 0 || c < 0 || l >= TAILLEGRILLE || c >= TAILLEGRILLE) {
+        throw std::invalid_argument(
+            "Coord: (" + std::to_string(l) + "," + std::to_string(c) + 
+            ") hors grille " + std::to_string(TAILLEGRILLE) + "x" + 
+            std::to_string(TAILLEGRILLE)
+        );
+    }
 }
 
 Coord::Coord(int n)

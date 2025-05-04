@@ -38,7 +38,7 @@ private:
 
 public:
     Coord();
-    Coord(int lig, int col);
+    Coord(int l, int c);
     Coord(int n);
 
     int getLig() const;

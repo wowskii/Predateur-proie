@@ -82,7 +82,7 @@ Ensemble Jeu::voisinsEspece(Coord c, Espece e) const{
             if(dx == 0 && dy == 0) continue;
             
             Coord voisin(x + dx, y + dy);
-            if((voisin.getLig() >= 0 && voisin.getLig() <= TAILLEGRILLE) && (voisin.getCol() <= 0 && voisin.getCol() <= TAILLEGRILLE)){
+            if((voisin.getLig() >= 0 && voisin.getLig() <= TAILLEGRILLE) && (voisin.getCol() >= 0 && voisin.getCol() <= TAILLEGRILLE)){
                 if(!g.caseVide(voisin)){
                     int id = g.getCase(voisin);
                     const Animal& animal = p.get(id);
@@ -101,12 +101,12 @@ TEST_CASE("Jeu::voisinsEspece()"){
     
     Jeu j(0.0, 0.0f);
     
-    Coord centre = Coord(2, 2); 
+    Coord centre = Coord{2, 2}; 
     
     j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord(1, 2)); 
-    j.ajouteAnimal(Espece::Lapin, Coord(3, 2)); 
-    j.ajouteAnimal(Espece::Renard, Coord(2, 1)); 
+    j.ajouteAnimal(Espece::Lapin, Coord{1, 2}); 
+    j.ajouteAnimal(Espece::Lapin, Coord{3, 2}); 
+    j.ajouteAnimal(Espece::Renard, Coord{2, 1}); 
     
    
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
