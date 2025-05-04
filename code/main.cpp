@@ -19,6 +19,7 @@ int main () {
         SFMLdessine(j.getGrille(), j.getPopulation(), w);
         j.etape();
         //system("clear");
+        //cout << j.getGrille() << endl;
         this_thread::sleep_for(chrono::seconds(1));
     }
 

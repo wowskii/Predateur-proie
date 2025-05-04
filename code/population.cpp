@@ -51,7 +51,7 @@ int Population::reserve() {
     while (map.find(nextId) != map.end()) {
         nextId++;
     }
-    std::cout << "New ID: " << nextId << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << std::endl;
+    std::cout << "New ID: " << nextId << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << " bucket count : " << map.bucket_count() << std::endl;
     return nextId++;
 }
 
@@ -75,7 +75,7 @@ TEST_CASE("get, set et reserve")
 }
 
 void Population::supprime(int id) {
-    map.erase(id);
+    cout << map.erase(id);
     freedIds.insert(id);
 
 }
