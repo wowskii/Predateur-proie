@@ -10,6 +10,7 @@
 #include <vector>
 #include <stdexcept>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -22,6 +23,7 @@ class Jeu {
     Animal getAnimal(int id);
     Jeu(float probLapins, float probRenard);
     int ajouteAnimal(Espece e, Coord c);
+    void afficher() const;
     void verifieGrille() const;
     Ensemble voisinsVides(Coord c) const;
     Ensemble voisinsEspece(Coord c, Espece e) const;
