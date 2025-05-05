@@ -10,6 +10,10 @@
 
 using namespace std;
 
+enum Sexe {
+    M,
+    F
+};
 
 enum Espece {
     Lapin,
@@ -20,6 +24,7 @@ class Animal{
     private :
         int id;
         Espece espece;
+        Sexe sexe;
         Coord coord;
         bool estVivant = true;
         int energie = 0;
