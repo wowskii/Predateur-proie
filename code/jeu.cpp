@@ -233,7 +233,6 @@ bool Jeu::peutReproduire(const Coord& c, Espece e, Sexe sexe) {
     int imax = min(c.getLig() + 1, TAILLEGRILLE - 1);
     int jmin = max(c.getCol() - 1, 0);
     int jmax = min(c.getCol() + 1, TAILLEGRILLE - 1);
-
     for (int i = imin; i <= imax; i++) {
         for (int j = jmin; j <= jmax; j++) {
             Coord voisin(i, j);
