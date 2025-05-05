@@ -8,6 +8,7 @@ const int Jeu::FoodInit = 5;
 const int Jeu::FoodLapin = 5;
 const int Jeu::FoodReprod = 8;
 const int Jeu::MaxFood = 10;
+const int Jeu::AgeReprod = 5;
 const float Jeu::ProbBirthRenard = 0.05f;
 
 Animal Jeu::getAnimal(int id)
@@ -65,7 +66,7 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
 
 int Jeu::mortAnimal(int id)
 {
-    // std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
+    std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
     Coord c = p.get(id).getCoord();
     g.videCase(c);
     p.supprime(id);
@@ -94,7 +95,7 @@ void Jeu::verifieGrille() const
 
         if (g.getCase(coord) != id)
         {
-            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + "). Animal trouvé dans cette position de la grille : ID : " + to_string(g.getCase(coord)) + ". Position de l'animal " + to_string(id) + " d'après Population: (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
+            throw runtime_error("Erreur: Animal " + to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + "). Animal trouvé dans cette position de la grille : ID : " + to_string(g.getCase(coord)) + ". Position de l'animal " + to_string(id) + " d'après Population: (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
         }
     }
 }
@@ -237,8 +238,8 @@ void Jeu::deplacerAnimal(Animal &a)
         a.setCoord(nouvellepos);
         p.updateAnimal(a.getId(), a);
 
-        //std::cout << "Animal ID: " << a.getId() << " " << a.getCoord() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
-                  //<< ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
+        std::cout << "Animal ID: " << a.getId() << " " << a.getCoord() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
+                  << ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
         //testCoherence();
     }
 }
@@ -340,9 +341,9 @@ void Jeu::etape()
             deplacerAnimal(a);
 
             // Reproduction de lapins
-            if (voisinsvides_initial >= MinFreeBirthLapin)
+            if (voisinsvides_initial >= MinFreeBirthLapin && a.getAge() > AgeReprod)
             {
-                if (rand() % 100 < ProbReproLapin * 100 && voisinsEspece(a.getCoord(), Lapin).cardinal() > 0)
+                if ((rand() % 100 < (ProbReproLapin * 100)) && (voisinsEspece(a.getCoord(), Lapin).cardinal() > 0))
                 {
                     ajouteAnimal(Lapin, c_initial);
                     //cout << "Naissance Lapin" << endl;
@@ -385,9 +386,9 @@ void Jeu::etape()
             else
                 deplacerAnimal(a);
             // Reproduction
-            if (a.getEnergie() >= FoodReprod)
+            if (a.getEnergie() >= FoodReprod and a.getAge() > AgeReprod)
             {
-                if (rand() % 100 < ProbBirthRenard * 100 && voisinsEspece(a.getCoord(), Renard).cardinal() > 0);
+                if ((rand() % 100 < (ProbBirthRenard * 100)) && (voisinsEspece(a.getCoord(), Renard).cardinal() > 0));
                 {
                     ajouteAnimal(Renard, c_initial);
                 }

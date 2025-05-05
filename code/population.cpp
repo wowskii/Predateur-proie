@@ -14,7 +14,7 @@ Ensemble Population::getIds() const
         //std::cout << "ID in vector: " << a.getId() << std::endl;
         if (t[i].getId() != -1) e.ajoute(i);
     }
-    cout << e.cardinal() << endl;
+    //cout << e.cardinal() << endl;
     return e;
 }
 
@@ -48,7 +48,7 @@ int Population::set(Animal &animal)
     int id = reserve();
     animal.setId(id);
     if (id == t.size()) t.push_back(animal);
-    else {t[id] = animal; cout << "recycled";}
+    else t[id] = animal;
     return id;
 }
 

@@ -27,6 +27,7 @@ class Jeu {
     static const int FoodInit;
     static const int FoodLapin;
     static const int FoodReprod;
+    static const int AgeReprod;
     static const int MaxFood;
     static const float ProbBirthRenard;
 
