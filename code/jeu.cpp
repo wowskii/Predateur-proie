@@ -342,7 +342,7 @@ void Jeu::etape()
             // Reproduction de lapins
             if (voisinsvides_initial >= MinFreeBirthLapin)
             {
-                if (rand() % 100 < ProbReproLapin * 100)
+                if (rand() % 100 < ProbReproLapin * 100 && voisinsEspece(a.getCoord(), Lapin).cardinal() > 0)
                 {
                     ajouteAnimal(Lapin, c_initial);
                     //cout << "Naissance Lapin" << endl;
@@ -387,7 +387,7 @@ void Jeu::etape()
             // Reproduction
             if (a.getEnergie() >= FoodReprod)
             {
-                if (rand() % 100 < ProbBirthRenard * 100)
+                if (rand() % 100 < ProbBirthRenard * 100 && voisinsEspece(a.getCoord(), Renard).cardinal() > 0);
                 {
                     ajouteAnimal(Renard, c_initial);
                 }
