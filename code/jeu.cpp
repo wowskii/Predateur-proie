@@ -342,7 +342,7 @@ void Jeu::etape()
             }
             
         }
-        
+        p.updateAnimal(id, a);
     }
     // Comportement Renards
     ids = p.getIds();
