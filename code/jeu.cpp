@@ -326,7 +326,7 @@ void Jeu::etape()
         if (a.esttropVieux())
         {
             mortAnimal(id);
-            cout << "mort de faim id: " << id << endl;
+            cout << "Animal mort de vieillissement id: " << id << endl;
             continue;
         }
         // cout << id << " " << compteur << " " << p.getIds().cardinal() << endl;
