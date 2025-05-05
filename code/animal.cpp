@@ -139,8 +139,34 @@ TEST_CASE("Aninmal mange()"){
     CHECK(a.getEnergie() == 1);
 }
 
+int Animal::getAge() const{
+    return age;
+}
+
 bool Animal::isVivant() const{
     return estVivant;
+}
+
+void Animal::vieillir(){
+    age++;
+}
+
+bool Animal::esttropVieux() const{
+    return (espece == Espece::Lapin && age >= LAPIN_MAX_AGE) || (espece == Espece::Renard && age >= RENARD_MAX_AGE);
+}
+TEST_CASE("Test vieillissement et mort par vieillesse") {
+    SUBCASE("Vieillissement normal") {
+        Animal lapin(1, Espece::Lapin, Coord(0,0));
+        CHECK(lapin.esttropVieux() == false);
+        
+        for (int i = 0; i < 19; i++) {
+            lapin.vieillir();
+            CHECK(lapin.esttropVieux() == false);
+        }
+        
+        lapin.vieillir();
+        CHECK(lapin.esttropVieux() == true);
+    }
 }
 
 
