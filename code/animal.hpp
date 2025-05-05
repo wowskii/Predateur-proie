@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdexcept>
 #include <sstream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -33,13 +34,14 @@ class Animal{
         static const int RENARD_MAX_AGE = 100;
     public:
         Animal();
-        Animal(int id, Espece e, Coord c, bool vivant = true, int energy = 0) : id(id), espece(e), coord(c), estVivant(vivant), energie(energy) {};
+        Animal(int id, Espece e, Coord c, Sexe s, bool vivant = true, int energy = 0) : id(id), espece(e), coord(c), sexe(M), estVivant(vivant), energie(energy) {};
         int getId() const;
         void setId(int newid);
         Coord getCoord() const;
         void setCoord(Coord c);
         void setEspece(Espece e);
         Espece getEspece() const;
+        Sexe getSexe() const;
         void affiche();
         bool meurt();
         bool seReproduire(int voisinVides) const;

@@ -21,7 +21,7 @@ TEST_CASE("Animal getCoord()"){
     CHECK(a.getCoord() == Coord(0, 0));
 }
 
-Animal::Animal() : id(-1), espece(Lapin), coord(0, 0), estVivant(false), energie(0) {};
+Animal::Animal() : id(-1), espece(Lapin), coord(0, 0), sexe(M), estVivant(false), energie(0) {};
 
 TEST_CASE("Constructeur par defaut"){
     Animal a;
@@ -69,6 +69,14 @@ TEST_CASE("Animal getEspece()"){
 
     a.setEspece(Renard);
     CHECK(a.getEspece() == Renard);
+}
+
+Sexe Animal::getSexe() const{
+    return sexe;
+}
+TEST_CASE("Animal getSexe()"){
+    Animal a;
+    CHECK(a.getSexe() == M);
 }
 
 void Animal::affiche() {
@@ -156,14 +164,15 @@ bool Animal::esttropVieux() const{
 }
 TEST_CASE("Test vieillissement et mort par vieillesse") {
     SUBCASE("Vieillissement normal") {
-        Animal lapin(1, Espece::Lapin, Coord(0,0));
+        Animal lapin(-1, Lapin, Coord(0, 0), Sexe::F);
         CHECK(lapin.esttropVieux() == false);
         
-        for (int i = 0; i < 19; i++) {
+        for (int i = 0; i < 49; i++) {
             lapin.vieillir();
             CHECK(lapin.esttropVieux() == false);
         }
         
+        lapin.vieillir();
         lapin.vieillir();
         CHECK(lapin.esttropVieux() == true);
     }

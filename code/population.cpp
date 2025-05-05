@@ -21,9 +21,9 @@ Ensemble Population::getIds() const
 TEST_CASE("getIds")
 {
     Population p;
-    Animal a1(-1, Lapin, Coord(5, 15));
-    Animal a2(-1, Renard, Coord(5, 17));
-    Animal a3(-1, Lapin, Coord(2, 15));
+    Animal a1(-1, Lapin, Coord(5, 15), Sexe::F);
+    Animal a2(-1, Renard, Coord(5, 17), Sexe::F);
+    Animal a3(-1, Lapin, Coord(2, 15), Sexe::M);
 
     p.set(a1);
 
@@ -55,7 +55,7 @@ int Population::set(Animal &animal)
 TEST_CASE("get, set et reserve")
 {
     Population p;
-    Animal a(-1, Renard, Coord(2, 4));
+    Animal a(-1, Renard, Coord(2, 4), Sexe::F);
     int id = p.set(a);
 
     CHECK(p.get(id).getId() == id);
@@ -79,8 +79,8 @@ void Population::supprime(int id) {
 TEST_CASE("supprime")
 {
     Population p;
-    Animal a1(-1, Lapin, Coord(5, 15));
-    Animal a2(-1, Renard, Coord(5, 15));
+    Animal a1(-1, Lapin, Coord(5, 15), Sexe::F);
+    Animal a2(-1, Renard, Coord(5, 15), Sexe::F);
     p.set(a1);
     p.set(a2);
     int idASupprimer = a1.getId();
