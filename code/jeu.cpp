@@ -295,11 +295,11 @@ void Jeu::afficher() const
     }
 }
 
-TEST_CASE("Test visuel affichage")
-{
-    Jeu j(0.4, 0.1);
-    j.afficher();
-}
+// TEST_CASE("Test visuel affichage")
+// {
+//     Jeu j(0.4, 0.1);
+//     j.afficher();
+// }
 
 void Jeu::testCoherence() const
 {
@@ -311,7 +311,7 @@ void Jeu::testCoherence() const
     verifieGrille();
 }
 
-// Méthodes touchant au fonctionnement du jeu
+//Méthodes touchant au fonctionnement du jeu
 
 void Jeu::etape()
 {

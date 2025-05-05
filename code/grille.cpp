@@ -39,8 +39,8 @@ TEST_CASE("Test general grille") {
     Grille g;
     Population p;
 
-    Animal a1(-1, Lapin, Coord(2,5));
-    Animal a2(-1, Lapin, Coord(5,5));
+    Animal a1(-1, Lapin, Coord(2,5), Sexe::F);
+    Animal a2(-1, Lapin, Coord(5,5), Sexe::F);
 
     //TEST setCase
     int test1 = g.setCase(Coord(2,5), p.set(a1));
