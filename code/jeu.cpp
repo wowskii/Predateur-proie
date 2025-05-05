@@ -30,10 +30,14 @@ Jeu::Jeu(float probLapins, float probRenard)
         int r = rand() % 100;
         Coord c(i);
 
-        if (r < probLapinsPourCent)
-            ajouteAnimal(Lapin, c);
-        else if (r < probLapinsPourCent + probRenardPourCent)
-            ajouteAnimal(Renard, c);
+        if (r < probLapinsPourCent) {
+            Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+            ajouteAnimal(Lapin, c, s); 
+        }
+        else if (r < probLapinsPourCent + probRenardPourCent){
+            Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+            ajouteAnimal(Renard, c, s);
+        }
     }
     // cout << g;
 }
@@ -53,9 +57,8 @@ Population Jeu::getPopulation()
     return p;
 }
 
-int Jeu::ajouteAnimal(Espece e, Coord c)
-{
-    Sexe s = (rand() % 2 == 0) ? M : F;
+int Jeu::ajouteAnimal(Espece e, Coord c, Sexe s)
+{   
     Animal a(-1, e, c, s, true, FoodInit);
     int id = p.set(a);
     g.setCase(c, id);
@@ -79,7 +82,7 @@ TEST_CASE("Jeu::mortAnimal()")
     Coord c(5, 5);
     Coord voisin(5, 6);
 
-    int id = j.ajouteAnimal(Espece::Lapin, c);
+    int id = j.ajouteAnimal(Espece::Lapin, c, Sexe::F);
     CHECK(j.getAnimal(id).getCoord() == c);
 
     j.mortAnimal(id);
@@ -104,7 +107,7 @@ TEST_CASE("Jeu::verifieGrille()")
 {
     Jeu jeu(0.0, 0.0);
     Coord c(2, 3);
-    int test = jeu.ajouteAnimal(Lapin, c);
+    int test = jeu.ajouteAnimal(Lapin, c, Sexe::F);
     CHECK_NOTHROW(jeu.verifieGrille());
 }
 
@@ -149,12 +152,12 @@ TEST_CASE("Jeu::voisinsVides()")
 {
     Jeu j(0.0, 0.0);
     Coord c(1, 1);
-    j.ajouteAnimal(Lapin, c);
+    j.ajouteAnimal(Lapin, c, Sexe::F);
     Ensemble vides = j.voisinsVides(c);
     CHECK(vides.cardinal() == 8);
 
     Coord c2(TAILLEGRILLE - 1, TAILLEGRILLE - 1);
-    j.ajouteAnimal(Lapin, c2);
+    j.ajouteAnimal(Lapin, c2, Sexe::F);
     Ensemble vides2 = j.voisinsVides(c2);
     CHECK(vides2.cardinal() == 3);
 }
@@ -212,10 +215,10 @@ TEST_CASE("Jeu::voisinsEspece()")
 
     Coord centre(10, 10);
 
-    j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));
-    j.ajouteAnimal(Espece::Lapin, Coord(11, 10));
-    j.ajouteAnimal(Espece::Renard, Coord(10, 9));
+    j.ajouteAnimal(Espece::Renard, centre, Sexe::M);
+    j.ajouteAnimal(Espece::Lapin, Coord(9, 10), Sexe::M);
+    j.ajouteAnimal(Espece::Lapin, Coord(11, 10), Sexe::M);
+    j.ajouteAnimal(Espece::Renard, Coord(10, 9), Sexe::M);
 
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
     Ensemble voisinsRenards = j.voisinsEspece(centre, Espece::Renard);
@@ -223,6 +226,56 @@ TEST_CASE("Jeu::voisinsEspece()")
     CHECK(voisinsLapins.cardinal() == 2);
     CHECK(voisinsRenards.cardinal() == 1);
     j.voisinsEspece(Coord(39, 39), Renard);
+}
+
+bool Jeu::peutReproduire(const Coord& c, Espece e, Sexe sexe) {
+    int imin = max(c.getLig() - 1, 0);
+    int imax = min(c.getLig() + 1, TAILLEGRILLE - 1);
+    int jmin = max(c.getCol() - 1, 0);
+    int jmax = min(c.getCol() + 1, TAILLEGRILLE - 1);
+    for (int i = imin; i <= imax; i++) {
+        for (int j = jmin; j <= jmax; j++) {
+            Coord voisin(i, j);
+            if ((i != c.getLig() || j != c.getCol()) && !g.caseVide(voisin)) {
+                int id = g.getCase(voisin);
+                const Animal &animal = p.get(id);
+                if (animal.getEspece() == e && animal.getSexe() != sexe) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+TEST_CASE("Jeu::peutReproduire()"){
+    Jeu jeu(0.0, 0.0); 
+    Coord centre(5, 5);
+
+    int id_centre = jeu.ajouteAnimal(Lapin, centre, Sexe::M);
+
+    Animal a_centre = jeu.getAnimal(id_centre);
+    jeu.getPopulation().updateAnimal(id_centre, a_centre); 
+
+    Sexe sexe_centre = a_centre.getSexe();
+
+    SUBCASE("Un partenaire du sexe opposé est présent") {
+        int id_partenaire = jeu.ajouteAnimal(Lapin, Coord(5, 6), Sexe::F);
+
+        Animal a_partenaire = jeu.getAnimal(id_partenaire);
+        a_partenaire.SetSexe(F);  // Corrected method name
+        jeu.getPopulation().updateAnimal(id_partenaire, a_partenaire);
+
+        CHECK(jeu.peutReproduire(centre, Lapin, sexe_centre) == true);
+    }
+
+    SUBCASE("Même sexe → ne peut pas se reproduire") {
+        int id_partenaire = jeu.ajouteAnimal(Lapin, Coord(5, 6), Sexe::M);
+        Animal a_partenaire = jeu.getAnimal(id_partenaire);
+        a_partenaire.SetSexe(M);  // Corrected method name
+        jeu.getPopulation().updateAnimal(id_partenaire, a_partenaire);
+
+        CHECK(jeu.peutReproduire(centre, Lapin, sexe_centre) == false);
+    }
 }
 
 void Jeu::deplacerAnimal(Animal &a)
@@ -247,7 +300,7 @@ void Jeu::deplacerAnimal(Animal &a)
 TEST_CASE("Jeu::deplacerAnimal()")
 {
     Jeu j(0.0f, 0.0f);
-    int id = j.ajouteAnimal(Espece::Lapin, Coord(2, 2));
+    int id = j.ajouteAnimal(Espece::Lapin, Coord(2, 2), Sexe::M);
     Animal a = j.getAnimal(id);
 
     CHECK(a.getCoord() == Coord(2, 2));
@@ -353,7 +406,7 @@ pair<int,int> Jeu::etape()
                             VoisinAssezAge = true;
                     }
                     if (VoisinAssezAge = true) {
-                    ajouteAnimal(Lapin, c_initial);
+                    ajouteAnimal(Lapin, c_initial, Sexe::M);
                     cout << a.getAge() << endl;
                     }
                 }
@@ -401,13 +454,15 @@ pair<int,int> Jeu::etape()
             {
                 if ((rand() % 100 < (ProbBirthRenard * 100)) && (voisinsEspece(a.getCoord(), Renard).cardinal() > 0));
                 {
+                    Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
                     bool VoisinAssezAge = false;
                     for (auto CoordVoisin : voisinsEspece(a.getCoord(), Renard)) {
                         if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
                             VoisinAssezAge = true;
                     }
                     if (VoisinAssezAge = true) {
-                    ajouteAnimal(Renard, c_initial);
+                    ajouteAnimal(Renard, c_initial, s);
+                    cout << a.getAge() << endl;
                     }
                 }
             }

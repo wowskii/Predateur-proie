@@ -37,7 +37,7 @@ class Jeu {
     Grille getGrille();
     Population getPopulation();
     Jeu(float probLapins, float probRenard);
-    int ajouteAnimal(Espece e, Coord c);
+    int ajouteAnimal(Espece e, Coord c, Sexe s);
     int mortAnimal(int id);
     void afficher() const;
     void verifieGrille() const;
@@ -45,6 +45,7 @@ class Jeu {
     Ensemble voisinsEspece(Coord c, Espece e) const;
     void deplacerAnimal(Animal &a);
     void testCoherence() const;
+    bool peutReproduire(const Coord& c, Espece e, Sexe sexe);
 
     pair<int,int> etape();
     bool cycleFini() const;
