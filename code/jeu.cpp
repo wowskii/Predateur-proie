@@ -55,7 +55,8 @@ Population Jeu::getPopulation()
 
 int Jeu::ajouteAnimal(Espece e, Coord c)
 {
-    Animal a(-1, e, c, true, FoodInit);
+    Sexe s = (rand() % 2 == 0) ? M : F;
+    Animal a(-1, e, c, s, true, FoodInit);
     int id = p.set(a);
     g.setCase(c, id);
     cout << "adding animal id: " << id << " at " << c << " " << g.getCase(c) << endl;
