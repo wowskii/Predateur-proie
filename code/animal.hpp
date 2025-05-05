@@ -23,9 +23,9 @@ class Animal{
         Coord coord;
         bool estVivant = true;
         int energie = 0;
-        int age;
-        static const int LAPIN_MAX_AGE = 20;  
-        static const int RENARD_MAX_AGE = 50;
+        int age = 0;
+        static const int LAPIN_MAX_AGE = 50;  
+        static const int RENARD_MAX_AGE = 100;
     public:
         Animal();
         Animal(int id, Espece e, Coord c, bool vivant = true, int energy = 0) : id(id), espece(e), coord(c), estVivant(vivant), energie(energy) {};

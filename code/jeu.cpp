@@ -94,7 +94,7 @@ void Jeu::verifieGrille() const
 
         if (g.getCase(coord) != id)
         {
-            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + ") id grille : " + to_string(g.getCase(coord)) + ". position d'apres Population: (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
+            throw std::runtime_error("Erreur: Animal " + std::to_string(id) + " mal placé aux coordonnees (" + to_string(coord.getLig()) + ", " + to_string(coord.getCol()) + "). Animal trouvé dans cette position de la grille : ID : " + to_string(g.getCase(coord)) + ". Position de l'animal " + to_string(id) + " d'après Population: (" + to_string(p.get(id).getCoord().getCol()) + ", " + to_string(p.get(id).getCoord().getCol()) + ").");
         }
     }
 }
@@ -139,7 +139,7 @@ Ensemble Jeu::voisinsVides(Coord c) const
                 }
             }
         }
-        //cout << ev << endl;
+        // cout << ev << endl;
         return ev;
     }
 }
@@ -231,15 +231,15 @@ void Jeu::deplacerAnimal(Animal &a)
     if (!caseslibres.estVide())
     {
         Coord nouvellepos = caseslibres.tire();
-        
+
         g.videCase(anciennepos);
         g.setCase(nouvellepos, a.getId());
         a.setCoord(nouvellepos);
         p.updateAnimal(a.getId(), a);
-        
-        std::cout << "Animal ID: " << a.getId() << " " << a.getCoord() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
-        << ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
-        testCoherence();
+
+        //std::cout << "Animal ID: " << a.getId() << " " << a.getCoord() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
+                  //<< ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
+        //testCoherence();
     }
 }
 TEST_CASE("Jeu::deplacerAnimal()")
@@ -313,34 +313,41 @@ void Jeu::testCoherence() const
 
 void Jeu::etape()
 {
-    // Comportement Lapins
     int compteur = 0;
     Ensemble ids = p.getIds();
-    
+    // Comportement Lapins
     for (auto id : ids)
     {
         Animal a = p.get(id);
-        //cout << id << " " << compteur << " " << p.getIds().cardinal() << endl;
-        compteur++;
-        
+
+        // Mort de vieillisement
+        a.vieillir();
+        if (a.esttropVieux())
+        {
+            mortAnimal(id);
+            cout << "mort de faim id: " << id << endl;
+            continue;
+        }
+        // cout << id << " " << compteur << " " << p.getIds().cardinal() << endl;
+        // compteur++;
+
         if (a.getEspece() == Espece::Lapin)
         {
             int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
-            
+
             Coord c_initial = a.getCoord();
-            
+
             deplacerAnimal(a);
-            
+
             // Reproduction de lapins
             if (voisinsvides_initial >= MinFreeBirthLapin)
             {
                 if (rand() % 100 < ProbReproLapin * 100)
                 {
                     ajouteAnimal(Lapin, c_initial);
-                    cout << "Naissance Lapin" << endl;
+                    //cout << "Naissance Lapin" << endl;
                 }
             }
-            
         }
         p.updateAnimal(id, a);
     }
@@ -349,13 +356,6 @@ void Jeu::etape()
     for (auto id : ids)
     {
         Animal a = p.get(id);
-
-        //Mort de vieillisement
-        a.vieillir();
-        if(a.esttropVieux()){
-            mortAnimal(id);
-            continue;
-        }
 
         if (a.getEspece() == Renard)
         {
@@ -380,7 +380,6 @@ void Jeu::etape()
                     g.setCase(nouvellepos, id);
                     a.setCoord(nouvellepos);
                     a.setEnergie(max(a.getEnergie() + FoodLapin, MaxFood));
-                    
                 }
             }
             else
@@ -397,7 +396,6 @@ void Jeu::etape()
         p.updateAnimal(id, a);
     }
     testCoherence();
-    
 }
 
 bool Jeu::cycleFini() const

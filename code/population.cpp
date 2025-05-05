@@ -14,7 +14,7 @@ Ensemble Population::getIds() const
         //std::cout << "ID in vector: " << a.getId() << std::endl;
         if (t[i].getId() != -1) e.ajoute(i);
     }
-    // cout << e << endl;
+    cout << e.cardinal() << endl;
     return e;
 }
 
