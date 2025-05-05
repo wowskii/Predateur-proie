@@ -79,6 +79,15 @@ TEST_CASE("Animal getSexe()"){
     CHECK(a.getSexe() == M);
 }
 
+void Animal::SetSexe(Sexe s){
+    sexe = s;
+}
+TEST_CASE("Animal setSexe()"){
+    Animal a;
+    a.SetSexe(F);
+    CHECK(a.getSexe() == F);
+}
+
 void Animal::affiche() {
     cout << "L'identifiant de l'animal est : " << getId() << endl;
     Coord position = getCoord();
