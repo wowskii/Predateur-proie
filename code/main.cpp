@@ -14,19 +14,28 @@ int main()
     RenderWindow w(VideoMode(850, 850), "Simulation");
     w.clear(Color(Color::Green));
 
+    ofstream data("stats/data.csv");
+    int nbetape = 0;
+
+    if (!data) {
+        cerr << "Erreur lors de l'ouverture du fichier!" << endl;
+    }
+
     while (w.isOpen())
     {
 
             //while (!(j.cycleFini()))
             //{
                 SFMLdessine(j.getGrille(), j.getPopulation(), w);
-                j.etape();
+                j.recenseData(j.etape(), nbetape, data);
                 // system("clear");
                 // cout << j.getGrille() << endl;
-                this_thread::sleep_for(chrono::milliseconds(200));
+                this_thread::sleep_for(chrono::milliseconds(500));
             //}
             //w.close();
-        
+        nbetape++;
     }
+
+    data.close();
     return 0;
 }

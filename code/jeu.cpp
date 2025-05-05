@@ -313,8 +313,9 @@ void Jeu::testCoherence() const
 
 //Méthodes touchant au fonctionnement du jeu
 
-void Jeu::etape()
+pair<int,int> Jeu::etape()
 {
+    int popLapins, popRenards;
     int compteur = 0;
     Ensemble ids = p.getIds();
     // Comportement Lapins
@@ -335,6 +336,7 @@ void Jeu::etape()
 
         if (a.getEspece() == Espece::Lapin)
         {
+            popLapins++;
 
             Coord c_initial = a.getCoord();
 
@@ -367,6 +369,7 @@ void Jeu::etape()
 
         if (a.getEspece() == Renard)
         {
+            popRenards++;
             int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
             Coord c_initial = a.getCoord();
             // Mort de faim
@@ -405,7 +408,6 @@ void Jeu::etape()
                     }
                     if (VoisinAssezAge = true) {
                     ajouteAnimal(Renard, c_initial);
-                    cout << a.getAge() << endl;
                     }
                 }
             }
@@ -413,6 +415,7 @@ void Jeu::etape()
         p.updateAnimal(id, a);
     }
     testCoherence();
+    return make_pair(popLapins, popRenards);
 }
 
 bool Jeu::cycleFini() const
@@ -430,4 +433,13 @@ bool Jeu::cycleFini() const
             AbsenceLapin = false;
     }
     return (AbsenceLapin || AbsenceRenard);
+}
+
+void Jeu::recenseData(pair<int,int> pop, int etape, ostream& fichier) const {
+    if (etape == 0) {
+        fichier << "Moment de la simulation, Population de lapins, Population de renards" << endl;
+    }
+    else if (etape > 0)
+        fichier << etape << "," << pop.first << "," << pop.second << endl;
+
 }

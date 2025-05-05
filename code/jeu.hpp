@@ -13,6 +13,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <fstream>
 
 using namespace std;
 
@@ -45,8 +46,9 @@ class Jeu {
     void deplacerAnimal(Animal &a);
     void testCoherence() const;
 
-    void etape();
+    pair<int,int> etape();
     bool cycleFini() const;
+    void recenseData(pair<int,int> pop, int etape, ostream& fichier) const;
 };
 
 
