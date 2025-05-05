@@ -12,6 +12,7 @@ int main()
     Jeu j(0.2, 0.01);
 
     RenderWindow w(VideoMode(850, 850), "Simulation");
+    w.clear(Color(Color::Green));
 
     while (w.isOpen())
     {

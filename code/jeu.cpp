@@ -8,7 +8,7 @@ const int Jeu::FoodInit = 5;
 const int Jeu::FoodLapin = 5;
 const int Jeu::FoodReprod = 8;
 const int Jeu::MaxFood = 10;
-const int Jeu::AgeReprod = 5;
+const int Jeu::AgeReprod = 15;
 const float Jeu::ProbBirthRenard = 0.05f;
 
 Animal Jeu::getAnimal(int id)
@@ -58,7 +58,7 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
     Animal a(-1, e, c, true, FoodInit);
     int id = p.set(a);
     g.setCase(c, id);
-    cout << "adding animal id: " << id << " at " << c << " " << g.getCase(c) << endl;
+    // cout << "adding animal id: " << id << " at " << c << " " << g.getCase(c) << endl;
     //  adding is all normal
     //  cout << g << endl;
     return id;
@@ -66,7 +66,7 @@ int Jeu::ajouteAnimal(Espece e, Coord c)
 
 int Jeu::mortAnimal(int id)
 {
-    std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
+    //std::cout << "Removing Animal ID: " << id << " aka " << g.getCase(p.get(id).getCoord()) << " from Coord: (" << p.get(id).getCoord() << std::endl;
     Coord c = p.get(id).getCoord();
     g.videCase(c);
     p.supprime(id);
@@ -238,8 +238,8 @@ void Jeu::deplacerAnimal(Animal &a)
         a.setCoord(nouvellepos);
         p.updateAnimal(a.getId(), a);
 
-        std::cout << "Animal ID: " << a.getId() << " " << a.getCoord() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
-                  << ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
+        // std::cout << "Animal ID: " << a.getId() << " " << a.getCoord() << " moved from (" << anciennepos.getLig() << ", " << anciennepos.getCol()
+        //           << ") to (" << nouvellepos.getLig() << ", " << nouvellepos.getCol() << ")" << std::endl;
         //testCoherence();
     }
 }
@@ -334,19 +334,25 @@ void Jeu::etape()
 
         if (a.getEspece() == Espece::Lapin)
         {
-            int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
 
             Coord c_initial = a.getCoord();
 
             deplacerAnimal(a);
 
             // Reproduction de lapins
-            if (voisinsvides_initial >= MinFreeBirthLapin && a.getAge() > AgeReprod)
+            if (voisinsVides(a.getCoord()).cardinal() >= MinFreeBirthLapin && a.getAge() > AgeReprod)
             {
                 if ((rand() % 100 < (ProbReproLapin * 100)) && (voisinsEspece(a.getCoord(), Lapin).cardinal() > 0))
                 {
+                    bool VoisinAssezAge = false;
+                    for (auto CoordVoisin : voisinsEspece(a.getCoord(), Lapin)) {
+                        if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
+                            VoisinAssezAge = true;
+                    }
+                    if (VoisinAssezAge = true) {
                     ajouteAnimal(Lapin, c_initial);
-                    //cout << "Naissance Lapin" << endl;
+                    cout << a.getAge() << endl;
+                    }
                 }
             }
         }
@@ -381,16 +387,25 @@ void Jeu::etape()
                     g.setCase(nouvellepos, id);
                     a.setCoord(nouvellepos);
                     a.setEnergie(max(a.getEnergie() + FoodLapin, MaxFood));
+                    p.updateAnimal(id, a);
                 }
             }
             else
                 deplacerAnimal(a);
             // Reproduction
-            if (a.getEnergie() >= FoodReprod and a.getAge() > AgeReprod)
+            if (voisinsVides(a.getCoord()).cardinal() > 3 && a.getEnergie() >= FoodReprod && a.getAge() > AgeReprod)
             {
                 if ((rand() % 100 < (ProbBirthRenard * 100)) && (voisinsEspece(a.getCoord(), Renard).cardinal() > 0));
                 {
+                    bool VoisinAssezAge = false;
+                    for (auto CoordVoisin : voisinsEspece(a.getCoord(), Renard)) {
+                        if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
+                            VoisinAssezAge = true;
+                    }
+                    if (VoisinAssezAge = true) {
                     ajouteAnimal(Renard, c_initial);
+                    cout << a.getAge() << endl;
+                    }
                 }
             }
         }
