@@ -3,25 +3,18 @@
 
 Animal Population::get(int id) const
 {
-    auto iter = map.find(id);
-    if (iter != map.end())
-    {
-        //cout << id << " " << iter->second.getCoord() << endl;
-        //cout << iter->first << id << iter->second.getId() << endl;
-        return iter->second;
-    }
-    //throw runtime_error("Un animal d'identifiant " + to_string(id) + " n'existe pas.");
-    return Animal();
+    return t.at(id);
 }
 
 Ensemble Population::getIds() const
 {
     Ensemble e;
-    for (const auto &pair : map)
+    for (int i = 0; i < t.size(); i++)
     {
-        //std::cout << "ID in map: " << pair.first << std::endl;
-        e.ajoute(pair.first);
+        //std::cout << "ID in vector: " << a.getId() << std::endl;
+        if (t[i].getId() != -1) e.ajoute(i);
     }
+    // cout << e << endl;
     return e;
 }
 
@@ -45,21 +38,17 @@ int Population::reserve() {
     if (!freedIds.empty()) {
         int id = *freedIds.begin();
         freedIds.erase(freedIds.begin());
-        std::cout << "Recycled ID: " << id << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << std::endl;
-        return id;
+        if (id < t.size()) return id; 
     }
-    while (map.find(nextId) != map.end()) {
-        nextId++;
-    }
-    std::cout << "New ID: " << nextId << ", map size: " << map.size() << ", freedIds size: " << freedIds.size() << " bucket count : " << map.bucket_count() << std::endl;
-    return nextId++;
+    return t.size();
 }
 
 int Population::set(Animal &animal)
 {
     int id = reserve();
     animal.setId(id);
-    map[id] = animal;
+    if (id == t.size()) t.push_back(animal);
+    else {t[id] = animal; cout << "recycled";}
     return id;
 }
 
@@ -74,10 +63,17 @@ TEST_CASE("get, set et reserve")
     CHECK(p.get(id).getCoord() == Coord(2, 4));
 }
 
-void Population::supprime(int id) {
-    cout << map.erase(id);
-    freedIds.insert(id);
+void Population::updateAnimal(int id, Animal a) {
+    t[id] = a;
+}
 
+void Population::supprime(int id) {
+    t[id] = Animal();
+    freedIds.insert(id);
+    // for (auto freeid: freedIds) {
+    //     cout << freeid << ",";
+    // }
+    // cout << endl;
 }
 
 TEST_CASE("supprime")
