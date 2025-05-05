@@ -338,6 +338,14 @@ void Jeu::etape()
     for (auto id : ids)
     {
         Animal a = p.get(id);
+
+        //Mort de vieillisement
+        a.vieillir();
+        if(a.esttropVieux()){
+            mortAnimal(id);
+            continue;
+        }
+
         if (a.getEspece() == Renard)
         {
             int voisinsvides_initial = voisinsVides(a.getCoord()).cardinal();
