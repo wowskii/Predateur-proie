@@ -11,7 +11,7 @@ int main()
 
     Jeu j(0.2, 0.02);
 
-    RenderWindow w(VideoMode(850, 850), "Simulation");
+    RenderWindow w(VideoMode(700, 700), "Simulation");
     w.clear(Color(Color::Green));
 
     ofstream data("stats/data.csv");

@@ -9,7 +9,9 @@ Projet de fin semestre réalisé par Quentin TALLOT et Nguyen Duc Nghia
 
 ## Cas 1 : Le cas le plus fréquent
 
-Si les renards parviennent a rester en groupe, ils ont des fortes chances de se reproduire, et domineront l'espace de simulation. Cependant, quand la population de lapins approchera celle des renards (c'est à dire que les renards auront mangé trop de lapins), ces derniers mourront de faim et de vieillesse; la simulation se termine donc avec une baisse des deux populations.
+Si les renards parviennent a rester en groupe, ils auront des fortes chances de se reproduire, et domineront l'espace de simulation.
+
+Cependant, quand la population de lapins approchera celle des renards (c'est à dire que les renards auront mangé trop de lapins), ces derniers mourront de faim et de vieillesse; la simulation se termine donc avec une baisse des deux populations.
 
 ![alt text](readme_images/image-1.png)
 
