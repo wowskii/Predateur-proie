@@ -68,9 +68,10 @@ int main()
             // system("clear");
             // cout << j.getGrille() << endl;
             this_thread::sleep_for(chrono::milliseconds(500));
+            nbetape++;
         }
         w.close();
-        nbetape++;
+
     }
 
     data.close();

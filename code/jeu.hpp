@@ -47,6 +47,7 @@ class Jeu {
     void deplacerAnimal(Animal &a);
     void testCoherence() const;
     bool peutReproduire(const Coord& c, Espece e, Sexe sexe);
+    //void reproduire(int id);
 
     pair<int,int> etape();
     bool cycleFini() const;
