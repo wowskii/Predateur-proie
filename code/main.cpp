@@ -9,7 +9,7 @@ int main()
 {
     srand(static_cast<unsigned int>(time(0)));
 
-    Jeu j(0.2, 0.05);
+    Jeu j(0.2, 0.02);
 
     RenderWindow w(VideoMode(850, 850), "Simulation");
     w.clear(Color(Color::Green));
