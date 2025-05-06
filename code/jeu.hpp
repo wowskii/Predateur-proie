@@ -14,6 +14,7 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+#include <typeinfo>
 
 using namespace std;
 
@@ -22,15 +23,15 @@ class Jeu {
     Grille g;
     Population p;
 
-    static const int MinFreeBirthLapin;
-    static const float ProbReproLapin;
+    static int MinFreeBirthLapin;
+    static float ProbReproLapin;
 
-    static const int FoodInit;
-    static const int FoodLapin;
-    static const int FoodReprod;
-    static const int AgeReprod;
-    static const int MaxFood;
-    static const float ProbBirthRenard;
+    static int FoodInit;
+    static int FoodLapin;
+    static int FoodReprod;
+    static int AgeReprod;
+    static int MaxFood;
+    static float ProbBirthRenard;
 
     public:
     Animal getAnimal(int id);
@@ -50,6 +51,7 @@ class Jeu {
     pair<int,int> etape();
     bool cycleFini() const;
     void recenseData(pair<int,int> pop, int etape, ostream& fichier) const;
+    void choisirParametres();
 };
 
 
