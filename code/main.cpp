@@ -24,15 +24,15 @@ int main()
     while (w.isOpen())
     {
 
-            //while (!(j.cycleFini()))
-            //{
+            while (!(j.cycleFini()))
+            {
                 SFMLdessine(j.getGrille(), j.getPopulation(), w);
                 j.recenseData(j.etape(), nbetape, data);
                 // system("clear");
                 // cout << j.getGrille() << endl;
                 this_thread::sleep_for(chrono::milliseconds(500));
-            //}
-            //w.close();
+            }
+            w.close();
         nbetape++;
     }
 
