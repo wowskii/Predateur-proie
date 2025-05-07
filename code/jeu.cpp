@@ -288,6 +288,48 @@ TEST_CASE("Jeu::peutReproduire()")
     }
 }
 
+void Jeu::reproduire(int id, Coord c_initial)
+{
+    Animal a = p.get(id);
+
+    if (a.getEspece() == Espece::Lapin)
+    {
+        if ((rand() % 100 < (ProbReproLapin * 100)) && (voisinsEspece(a.getCoord(), Lapin).cardinal() > 0) && voisinsVides(a.getCoord()).cardinal() >= MinFreeBirthLapin && a.getAge() > AgeReprod && peutReproduire(a.getCoord(), Lapin, a.getSexe()))
+        {
+            bool VoisinAssezAge = false;
+            for (auto CoordVoisin : voisinsEspece(a.getCoord(), Lapin))
+            {
+                if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
+                    VoisinAssezAge = true;
+            }
+            if (VoisinAssezAge)
+            {
+                Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+                ajouteAnimal(Lapin, c_initial, s);
+            }
+        }
+    }
+
+    else if (a.getEspece() == Espece::Renard)
+    {
+        if ((rand() % 100 < (ProbBirthRenard * 100)) && (voisinsEspece(a.getCoord(), Renard).cardinal() > 0) && voisinsVides(a.getCoord()).cardinal() > 3 && a.getEnergie() >= FoodReprod && a.getAge() > AgeReprod && peutReproduire(a.getCoord(), Renard, a.getSexe()))
+        {
+            bool VoisinAssezAge = false;
+            for (auto CoordVoisin : voisinsEspece(a.getCoord(), Renard))
+            {
+                if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
+                    VoisinAssezAge = true;
+            }
+            if (VoisinAssezAge)
+            {
+                Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+                ajouteAnimal(Renard, c_initial, s);
+                // cout << a.getAge() << endl;
+            }
+        }
+    }
+}
+
 void Jeu::deplacerAnimal(Animal &a)
 {
     Coord anciennepos = a.getCoord();
@@ -411,24 +453,7 @@ pair<int, int> Jeu::etape()
             deplacerAnimal(a);
 
             // Reproduction de lapins
-            if (voisinsVides(a.getCoord()).cardinal() >= MinFreeBirthLapin && a.getAge() > AgeReprod && peutReproduire(a.getCoord(), Lapin, a.getSexe()))
-            {
-                if ((rand() % 100 < (ProbReproLapin * 100)) && (voisinsEspece(a.getCoord(), Lapin).cardinal() > 0))
-                {
-                    bool VoisinAssezAge = false;
-                    for (auto CoordVoisin : voisinsEspece(a.getCoord(), Lapin))
-                    {
-                        if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
-                            VoisinAssezAge = true;
-                    }
-                    if (VoisinAssezAge = true)
-                    {
-                        Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
-                        ajouteAnimal(Lapin, c_initial, s);
-                        // cout << a.getAge() << endl;
-                    }
-                }
-            }
+            reproduire(id, c_initial);
             p.updateAnimal(id, a);
         }
         // Comportement Renards
@@ -461,27 +486,8 @@ pair<int, int> Jeu::etape()
             }
             else
                 deplacerAnimal(a);
-            // Reproduction
-            if (voisinsVides(a.getCoord()).cardinal() > 3 && a.getEnergie() >= FoodReprod && a.getAge() > AgeReprod && peutReproduire(a.getCoord(), Renard, a.getSexe()))
-            {
-                if ((rand() % 100 < (ProbBirthRenard * 100)) && (voisinsEspece(a.getCoord(), Renard).cardinal() > 0))
-                    ;
-                {
-                    bool VoisinAssezAge = false;
-                    for (auto CoordVoisin : voisinsEspece(a.getCoord(), Renard))
-                    {
-                        if (p.get(g.getCase(CoordVoisin)).getAge() > AgeReprod)
-                            VoisinAssezAge = true;
-                    }
-                    if (VoisinAssezAge = true)
-                    {
-                        Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
-                        ajouteAnimal(Renard, c_initial, s);
-                        // cout << a.getAge() << endl;
-
-                    }
-                }
-            }
+            // Reproduction de renards
+            reproduire(id, c_initial);
         }
         p.updateAnimal(id, a);
     }

@@ -8,7 +8,7 @@ using namespace sf;
 pair<float, float> initialisationProb()
 {
     float probLapin = 0.2;
-    float probRenard = 0.05;
+    float probRenard = 0.02;
     char ouinon;
     do
     {
