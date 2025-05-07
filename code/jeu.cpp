@@ -475,7 +475,7 @@ pair<int, int> Jeu::etape()
                     }
                     if (VoisinAssezAge = true)
                     {
-                        Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+                        Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;                     
                         ajouteAnimal(Renard, c_initial, s);
                         // cout << a.getAge() << endl;
                     }
