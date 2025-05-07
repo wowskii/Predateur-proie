@@ -38,7 +38,7 @@ class Jeu {
     Grille getGrille();
     Population getPopulation();
     Jeu(float probLapins, float probRenard);
-    int ajouteAnimal(Espece e, Coord c);
+    int ajouteAnimal(Espece e, Coord c, Sexe s);
     int mortAnimal(int id);
     void afficher() const;
     void verifieGrille() const;

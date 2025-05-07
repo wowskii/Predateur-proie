@@ -31,11 +31,13 @@ Jeu::Jeu(float probLapins, float probRenard)
 
         if (r < probLapinsPourCent)
         {
-            ajouteAnimal(Lapin, c);
+            Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+            ajouteAnimal(Lapin, c, s);
         }
         else if (r < probLapinsPourCent + probRenardPourCent)
         {
-            ajouteAnimal(Renard, c);
+            Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+            ajouteAnimal(Renard, c, s);
         }
     }
     // cout << g;
@@ -56,9 +58,8 @@ Population Jeu::getPopulation()
     return p;
 }
 
-int Jeu::ajouteAnimal(Espece e, Coord c)
+int Jeu::ajouteAnimal(Espece e, Coord c, Sexe s)
 {
-    Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
     Animal a(-1, e, c, s, true, FoodInit);
     int id = p.set(a);
     g.setCase(c, id);
@@ -82,7 +83,7 @@ TEST_CASE("Jeu::mortAnimal()")
     Coord c(5, 5);
     Coord voisin(5, 6);
 
-    int id = j.ajouteAnimal(Espece::Lapin, c);
+    int id = j.ajouteAnimal(Espece::Lapin, c, Sexe::F);
     CHECK(j.getAnimal(id).getCoord() == c);
 
     j.mortAnimal(id);
@@ -107,7 +108,7 @@ TEST_CASE("Jeu::verifieGrille()")
 {
     Jeu jeu(0.0, 0.0);
     Coord c(2, 3);
-    int test = jeu.ajouteAnimal(Lapin, c);
+    int test = jeu.ajouteAnimal(Lapin, c, Sexe::M);
     CHECK_NOTHROW(jeu.verifieGrille());
 }
 
@@ -152,12 +153,12 @@ TEST_CASE("Jeu::voisinsVides()")
 {
     Jeu j(0.0, 0.0);
     Coord c(1, 1);
-    j.ajouteAnimal(Lapin, c);
+    j.ajouteAnimal(Lapin, c, Sexe::M);
     Ensemble vides = j.voisinsVides(c);
     CHECK(vides.cardinal() == 8);
 
     Coord c2(TAILLEGRILLE - 1, TAILLEGRILLE - 1);
-    j.ajouteAnimal(Lapin, c2);
+    j.ajouteAnimal(Lapin, c2, Sexe::F);
     Ensemble vides2 = j.voisinsVides(c2);
     CHECK(vides2.cardinal() == 3);
 }
@@ -215,10 +216,10 @@ TEST_CASE("Jeu::voisinsEspece()")
 
     Coord centre(10, 10);
 
-    j.ajouteAnimal(Espece::Renard, centre);
-    j.ajouteAnimal(Espece::Lapin, Coord(9, 10));
-    j.ajouteAnimal(Espece::Lapin, Coord(11, 10));
-    j.ajouteAnimal(Espece::Renard, Coord(10, 9));
+    j.ajouteAnimal(Espece::Renard, centre, Sexe::F);
+    j.ajouteAnimal(Espece::Lapin, Coord(9, 10), Sexe::M);
+    j.ajouteAnimal(Espece::Lapin, Coord(11, 10), Sexe::M);
+    j.ajouteAnimal(Espece::Renard, Coord(10, 9), Sexe::F);
 
     Ensemble voisinsLapins = j.voisinsEspece(centre, Espece::Lapin);
     Ensemble voisinsRenards = j.voisinsEspece(centre, Espece::Renard);
@@ -257,16 +258,17 @@ TEST_CASE("Jeu::peutReproduire()")
     Jeu jeu(0.0, 0.0);
     Coord centre(5, 5);
 
-    int id_centre = jeu.ajouteAnimal(Lapin, centre);
+    int id_centre = jeu.ajouteAnimal(Lapin, centre, Sexe::M);
 
     Animal a_centre = jeu.getAnimal(id_centre);
+    a_centre.SetSexe(M);
     jeu.getPopulation().updateAnimal(id_centre, a_centre);
 
     Sexe sexe_centre = a_centre.getSexe();
 
     SUBCASE("Un partenaire du sexe opposé est présent")
     {
-        int id_partenaire = jeu.ajouteAnimal(Lapin, Coord(5, 6));
+        int id_partenaire = jeu.ajouteAnimal(Lapin, Coord(5, 6), Sexe::F);
 
         Animal a_partenaire = jeu.getAnimal(id_partenaire);
         a_partenaire.SetSexe(F); // Corrected method name
@@ -277,7 +279,7 @@ TEST_CASE("Jeu::peutReproduire()")
 
     SUBCASE("Même sexe → ne peut pas se reproduire")
     {
-        int id_partenaire = jeu.ajouteAnimal(Lapin, Coord(5, 6));
+        int id_partenaire = jeu.ajouteAnimal(Lapin, Coord(5, 6), Sexe::M);
         Animal a_partenaire = jeu.getAnimal(id_partenaire);
         a_partenaire.SetSexe(M); // Corrected method name
         jeu.getPopulation().updateAnimal(id_partenaire, a_partenaire);
@@ -308,7 +310,7 @@ void Jeu::deplacerAnimal(Animal &a)
 TEST_CASE("Jeu::deplacerAnimal()")
 {
     Jeu j(0.0f, 0.0f);
-    int id = j.ajouteAnimal(Espece::Lapin, Coord(2, 2));
+    int id = j.ajouteAnimal(Espece::Lapin, Coord(2, 2), Sexe::F);
     Animal a = j.getAnimal(id);
 
     CHECK(a.getCoord() == Coord(2, 2));
@@ -421,7 +423,8 @@ pair<int, int> Jeu::etape()
                     }
                     if (VoisinAssezAge = true)
                     {
-                        ajouteAnimal(Lapin, c_initial);
+                        Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+                        ajouteAnimal(Lapin, c_initial, s);
                         // cout << a.getAge() << endl;
                     }
                 }
@@ -472,7 +475,8 @@ pair<int, int> Jeu::etape()
                     }
                     if (VoisinAssezAge = true)
                     {
-                        ajouteAnimal(Renard, c_initial);
+                        Sexe s = (rand() % 2 == 0) ? Sexe::M : Sexe::F;
+                        ajouteAnimal(Renard, c_initial, s);
                         // cout << a.getAge() << endl;
                     }
                 }
